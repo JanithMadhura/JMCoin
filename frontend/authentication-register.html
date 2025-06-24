@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | JMCoin</title>
+  <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+  <link rel="stylesheet" href="./assets/css/styles.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #3b82f6, #22c55e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .register-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .logo-img {
+      width: 120px;
+      height: auto;
+      margin: 0 auto 15px;
+    }
+
+    .form-control {
+      border-radius: 10px;
+    }
+
+    .btn-custom {
+      border-radius: 12px;
+      font-size: 16px;
+      padding: 10px 0;
+    }
+
+    .text-small {
+      font-size: 14px;
+    }
+
+    .text-link {
+      color: #3b82f6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-card">
+    <div class="text-center">
+      <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
+      <h4 class="fw-semibold mt-3 mb-1">Create Your Account</h4>
+      <p class="text-muted text-small">Join and start earning from surveys!</p>
+    </div>
+
+    <form id="registerForm">
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Enter your full name" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter your email" required />
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Create a password" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 btn-custom mb-3">Sign Up</button>
+
+      <p class="text-center text-small mb-0">Already have an account?
+        <a href="./authentication-login.html" class="text-link">Sign In</a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password')
+      };
+
+      try {
+        const res = await fetch('http://localhost:3001/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          alert(result.msg);
+          window.location.href = './authentication-login.html';
+        } else {
+          alert(result.msg || 'Registration failed');
+        }
+      } catch (err) {
+        alert('Error connecting to server');
+        console.error(err);
+      }
+    });
+  </script>
+
+  <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

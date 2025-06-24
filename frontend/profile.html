@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Profile | JMCoin</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css" />
+    <style>
+        body {
+        background: linear-gradient(135deg, #3b82f6, #22c55e);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', sans-serif;
+        }
+
+        .profile-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        max-width: 500px;
+        width: 100%;
+        }
+
+        .logo-img {
+        width: 100px;
+        height: auto;
+        margin-bottom: 15px;
+        }
+
+        .profile-title {
+        font-weight: 600;
+        font-size: 22px;
+        }
+
+        .info-label {
+        font-weight: 500;
+        color: #555;
+        }
+
+        .info-value {
+        font-weight: bold;
+        color: #111;
+        }
+
+        .ip-list {
+        list-style: none;
+        padding-left: 0;
+        }
+
+        .ip-list li {
+        padding: 5px 0;
+        border-bottom: 1px dashed #ccc;
+        }
+    </style>
+    </head>
+    <body>
+
+    <div class="profile-card text-center">
+        <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
+        <h4 class="profile-title mb-3">My Profile</h4>
+
+        <div class="text-start">
+        <p><span class="info-label">User ID:</span> <span class="info-value" id="userId">Loading...</span></p>
+        <p><span class="info-label">Joined Date:</span> <span class="info-value" id="joinedDate">Loading...</span></p>
+        <p><span class="info-label">Recent IP Logins:</span></p>
+        <ul class="ip-list" id="ipList">
+            <li>Loading IPs...</li>
+        </ul>
+        </div>
+
+        <a href="./index.html" class="btn btn-primary mt-4">Back to Dashboard</a>
+    </div>
+
+    <script>
+        const email = localStorage.getItem("email");
+
+        fetch(`http://localhost:3001/api/user-profile/${email}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("userId").textContent = data.userId;
+            document.getElementById("joinedDate").textContent = new Date(data.joinedAt).toDateString();
+
+            const ipList = document.getElementById("ipList");
+            ipList.innerHTML = "";
+            data.recentIps.slice(0, 5).forEach(ip => {
+                const li = document.createElement("li");
+                const dateStr = new Date(ip.date).toLocaleString();
+                li.textContent = `${ip.ip} (at ${dateStr})`;
+                ipList.appendChild(li);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("ipList").innerHTML = "<li>Error loading IPs</li>";
+        });
+    </script>
+
+</body>
+</html>

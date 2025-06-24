@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JMCoin</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css" />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JMCoin - Earn for Your Opinion</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body, html {
+        height: 100%;
+        margin: 0;
+        background: linear-gradient(135deg, #f0f4ff, #dff2ff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .landing-container {
+        background: #ffffff;
+        padding: 3rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        max-width: 420px;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .logo-img {
+        width: 120px;
+        height: auto;
+        margin-bottom: 1.5rem;
+        }
+
+        h1 {
+        font-size: 1.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        }
+
+        .intro-text {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 2rem;
+        }
+
+        .btn-custom {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease-in-out;
+        }
+
+        .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+        }
+
+        @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="landing-container">
+        <img src="assets/images/logos/jmc.jpg" alt="JMCoin Logo" class="logo-img" />
+
+        <h1>Welcome to JMCoin</h1>
+        <p class="intro-text">Your opinion matters. Complete surveys and earn money.</p>
+
+        <a href="authentication-login.html" class="btn btn-primary btn-custom">Login</a>
+        <a href="authentication-register.html" class="btn btn-outline-primary btn-custom">Sign Up</a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+</html>
