@@ -157,4 +157,4 @@ app.get('/api/dashboard', authenticateToken, async (req, res) => {
   res.json({ balance: user.balance });
 });
 
-module.exports = app;
+module.exports = serverless(app);
