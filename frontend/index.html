@@ -2,302 +2,100 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JMCoin Earning</title>
-  <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
-  <link rel="stylesheet" href="./assets/css/styles.min.css" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JMCoin</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css" />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JMCoin - Earn for Your Opinion</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body, html {
+        height: 100%;
+        margin: 0;
+        background: linear-gradient(135deg, #f0f4ff, #dff2ff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .landing-container {
+        background: #ffffff;
+        padding: 3rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        max-width: 420px;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .logo-img {
+        width: 120px;
+        height: auto;
+        margin-bottom: 1.5rem;
+        }
+
+        h1 {
+        font-size: 1.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        }
+
+        .intro-text {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 2rem;
+        }
+
+        .btn-custom {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease-in-out;
+        }
+
+        .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+        }
+
+        @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+        }
+    </style>
 </head>
 
 <body>
-  <!--  Body Wrapper -->
-  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="landing-container">
+        <img src="assets/images/logos/jmc.jpg" alt="JMCoin Logo" class="logo-img" />
 
-    <!--  App Topstrip -->
+        <h1>Welcome to JMCoin</h1>
+        <p class="intro-text">Your opinion matters. Complete surveys and earn money.</p>
 
-
+        <a href="authentication-login.html" class="btn btn-primary btn-custom">Login</a>
+        <a href="authentication-register.html" class="btn btn-outline-primary btn-custom">Sign Up</a>
     </div>
-    <!-- Sidebar Start -->
-  <aside class="left-sidebar">
-    <!-- Sidebar scroll-->
-    <div>
-      <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="./index.html" class="text-nowrap logo-img">
-          <img src="assets/images/logos/jmc.jpg" alt="logo" style="width:150px; height:auto;"/>
-        </a>
-        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-          <i class="ti ti-x fs-6"></i>
-        </div>
-      </div>
 
-      <!-- Sidebar navigation -->
-      <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-        <ul id="sidebarnav">
-          <li class="nav-small-cap">
-            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
-            <span class="hide-menu">Navigation</span>
-          </li>
-
-          <!-- Dashboard -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./index.html">
-              <i class="ti ti-layout-dashboard"></i>
-              <span class="hide-menu">Dashboard</span>
-            </a>
-          </li>
-
-          <!-- User Profile -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./profile.html">
-              <i class="ti ti-user"></i>
-              <span class="hide-menu">User Profile</span>
-            </a>
-          </li>
-
-          <!-- Earn (Dropdown) -->
-          <li class="sidebar-item">
-            <a class="sidebar-link has-arrow" href="javascript:void(0)">
-              <i class="ti ti-coin"></i>
-              <span class="hide-menu">Earn</span>
-            </a>
-            <ul aria-expanded="false" class="collapse first-level">
-              <li class="sidebar-item">
-                <a href="./earn-cpx.html" class="sidebar-link">
-                  <i class="ti ti-arrow-narrow-right"></i>
-                  <span class="hide-menu">CPX</span>
-                </a>
-              </li>
-              <li class="sidebar-item">
-                <a href="./earn-bitlabs.html" class="sidebar-link">
-                  <i class="ti ti-arrow-narrow-right"></i>
-                  <span class="hide-menu">Bitlabs</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- Withdraw -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./withdraw.html">
-              <i class="ti ti-currency-dollar"></i>
-              <span class="hide-menu">Withdraw</span>
-            </a>
-          </li>
-
-          <!-- Contact Us -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./contact.html">
-              <i class="ti ti-phone"></i>
-              <span class="hide-menu">Contact Us</span>
-            </a>
-          </li>
-
-        </ul>
-      </nav>
-      <!-- End Sidebar navigation -->
-    </div>
-  </aside>
-  <!-- Sidebar End -->
-
-    <!--  Sidebar End -->
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-      <!--  Header Start -->
-      <header class="app-header">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <ul class="navbar-nav">
-            <li class="nav-item d-block d-xl-none">
-              <a class="nav-link sidebartoggler " id="headerCollapse" href="javascript:void(0)">
-                <i class="ti ti-menu-2"></i>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link " href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="ti ti-bell"></i>
-                <div class="notification bg-primary rounded-circle"></div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-animate-up" aria-labelledby="drop1">
-                <div class="message-body">
-                  <a href="javascript:void(0)" class="dropdown-item">
-                    Item 1
-                  </a>
-                  <a href="javascript:void(0)" class="dropdown-item">
-                    Item 2
-                  </a>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-               
-              <li class="nav-item dropdown">
-                <a class="nav-link " href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src="./assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                  <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-user fs-6"></i>
-                      <p class="mb-0 fs-3">My Profile</p>
-                    </a>
-                    
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-3">History</p>
-                    </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-      <!--  Header End -->
-      <div class="body-wrapper">
-        <div class="container py-4">
-          <div class="row">
-            <!-- Main Balance Card -->
-            <div class="col-lg-12 mb-4">
-              <div class="card">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                  <div>
-                    <h4 class="card-title mb-1">Main Balance</h4>
-                    <p class="card-subtitle text-muted">Total Earnings Available</p>
-                  </div>
-                  <h2 id="balance" class="text-success mb-0 fw-bold">Loading...</h2>
-                </div>
-              </div>
-            </div>
-            <!-- Earnings Overview Section -->
-            <div class="col-lg-12">
-              <div class="card-body">
-                <div class="d-md-flex align-items-center mb-3">
-                  <div>
-                    <h4 class="card-title mb-0">User Earnings Overview</h4>
-                    <p class="card-subtitle text-muted">Weekly earnings from CPX and Bitlabs</p>
-                  </div>
-                </div>
-                <div id="sales-overview" style="height: 320px;"></div>
-              </div>
-            </div>
-
-      <!-- ✅ Add this before </body> to load ApexCharts -->
-      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-      <!-- ✅ Chart Rendering Script -->
-      <script>
-        var options = {
-          chart: {
-            type: 'bar',
-            height: 320,
-            toolbar: { show: false }
-          },
-          series: [
-            {
-              name: 'CPX',
-              data: [120, 90, 150, 80, 70, 110, 95]
-            },
-            {
-              name: 'Bitlabs',
-              data: [100, 60, 130, 90, 50, 120, 100]
-            }
-          ],
-          xaxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            title: { text: 'Day of Week' }
-          },
-          yaxis: {
-            title: { text: 'Earnings ($)' }
-          },
-          colors: ['#3b82f6', '#22c55e'],
-          plotOptions: {
-            bar: {
-              horizontal: false,
-              columnWidth: '50%',
-              endingShape: 'rounded'
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-          },
-          fill: {
-            opacity: 1
-          },
-          tooltip: {
-            y: {
-              formatter: function (val) {
-                return "$" + val;
-              }
-            }
-          },
-          legend: {
-            position: 'top'
-          }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#sales-overview"), options);
-        chart.render();
-      </script>
-
-            
-  
-          <div class="py-6 px-6 text-center">
-            <p class="mb-0 fs-4">Design and Developed by <a href="#"
-                class="pe-1 text-primary text-decoration-underline">JMCoin</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./assets/js/sidebarmenu.js"></script>
-  <script src="./assets/js/app.min.js"></script>
-  <script src="./assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="./assets/js/dashboard.js"></script>
-  <!-- solar icons -->
-  <script>
-  async function fetchUserData() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Please login first');
-      window.location.href = '/authentication-login.html';
-      return;
-    }
-
-    try {
-      const res = await fetch('https://jm-coin.vercel.app/api/dashboard', {
-        method: 'GET',
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.msg || 'Failed to fetch data');
-
-      // Update balance on page
-      document.querySelector('#balance').textContent = data.balance + ' JMC';
-
-    } catch (err) {
-      alert(err.message);
-      // Redirect to login if unauthorized
-      if (err.message === 'Token is not valid' || err.message === 'No token, authorization denied') {
-        window.location.href = '/authentication-login.html';
-      }
-    }
-  }
-
-  fetchUserData();
-</script>
-  
-</body>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 
 </html>
