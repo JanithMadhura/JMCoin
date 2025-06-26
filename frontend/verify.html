@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Email Verification | JMCoin</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css" />
+    <style>
+        body {
+        background: linear-gradient(135deg, #3b82f6, #22c55e);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', sans-serif;
+        }
+
+        .verify-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        width: 100%;
+        max-width: 420px;
+        }
+
+        .logo-img {
+        width: 120px;
+        height: auto;
+        margin: 0 auto 15px;
+        }
+
+        .form-control {
+        border-radius: 10px;
+        text-align: center;
+        letter-spacing: 5px;
+        font-size: 20px;
+        }
+
+        .btn-custom {
+        border-radius: 12px;
+        font-size: 16px;
+        padding: 10px 0;
+        }
+
+        .text-small {
+        font-size: 14px;
+        }
+
+        .text-link {
+        color: #3b82f6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="verify-card">
+        <div class="text-center">
+        <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
+        <h4 class="fw-semibold mt-3 mb-1">Email Verification</h4>
+        <p class="text-muted text-small">Enter the 6-digit code sent to your email</p>
+        </div>
+
+        <form id="verifyForm">
+        <div class="mb-4">
+            <label class="form-label">Verification Code</label>
+            <input type="text" name="code" maxlength="6" class="form-control" placeholder="------" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 btn-custom mb-3">Verify Account</button>
+
+        <p class="text-center text-small mb-0">
+            Didn't get the code? <a href="./register.html" class="text-link">Register again</a>
+        </p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('verifyForm');
+        form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const code = form.code.value.trim();
+        const email = localStorage.getItem('pendingEmail');
+
+        if (!email) {
+            alert('No email found. Please register again.');
+            window.location.href = './register.html';
+            return;
+        }
+
+        try {
+            const res = await fetch('https://jm-coin.vercel.app/api/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, code }),
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+            alert(result.msg || 'Verification successful');
+            localStorage.removeItem('pendingEmail');
+            window.location.href = './authentication-login.html';
+            } else {
+            alert(result.msg || 'Invalid or expired code');
+            }
+        } catch (err) {
+            alert('Error verifying code');
+            console.error(err);
+        }
+        });
+    </script>
+
+    <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

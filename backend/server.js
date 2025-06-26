@@ -35,31 +35,79 @@ const authenticateToken = (req, res, next) => {
 };
 
 // Register route
+const PendingUser = require('./models/PendingUser');
+const sendVerificationEmail = require('./utils/sendEmail');
+
 app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // If user already exists in final users collection
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ msg: 'User already exists' });
 
+    // Remove any old pending verification
+    const existingPending = await PendingUser.findOne({ email });
+    if (existingPending) await existingPending.deleteOne();
+
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
+    // Generate a 6-digit verification code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Save to pending collection
+    const pendingUser = new PendingUser({
       name,
       email,
       passwordHash,
-      balance: 0,
-      loginIps: [],
+      verificationCode
     });
 
-    await newUser.save();
+    await pendingUser.save();
 
-    res.json({ msg: 'User registered successfully' });
+    // Send verification email
+    await sendVerificationEmail(email, verificationCode);
+
+    res.json({ msg: 'Verification code sent to your email' });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
 });
+
+const User = require('./models/User'); // your main user model
+
+app.post('/api/verify', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    const pendingUser = await PendingUser.findOne({ email });
+    if (!pendingUser) return res.status(404).json({ msg: 'No pending verification for this email' });
+
+    if (pendingUser.verificationCode !== code)
+      return res.status(400).json({ msg: 'Invalid verification code' });
+
+    // Move to User collection
+    const newUser = new User({
+      name: pendingUser.name,
+      email: pendingUser.email,
+      passwordHash: pendingUser.passwordHash,
+      balance: 0,
+      loginIps: [],
+    });
+
+    await newUser.save();
+    await pendingUser.deleteOne();
+
+    res.json({ msg: 'Email verified and account created successfully' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 
 // Login route
 app.post('/api/login', async (req, res) => {
