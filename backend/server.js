@@ -76,7 +76,6 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-const User = require('./models/User'); // your main user model
 
 app.post('/api/verify', async (req, res) => {
   try {
