@@ -250,7 +250,7 @@ app.post('/api/reset-password', async (req, res) => {
   }
 });
 
-pp.post('/api/verify-reset-code', async (req, res) => {
+app.post('/api/verify-reset-code', async (req, res) => {
   try {
     const { email, code } = req.body;
 
