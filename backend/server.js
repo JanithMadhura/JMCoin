@@ -228,6 +228,26 @@ app.post('/api/reset-password', async (req, res) => {
   res.json({ msg: 'Password reset successful' });
 });
 
+app.post('/api/verify-reset-code', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user || user.resetCode !== code)
+      return res.status(400).json({ msg: 'Invalid code or email' });
+
+    if (Date.now() > user.resetCodeExpires)
+      return res.status(400).json({ msg: 'Code expired. Request a new one.' });
+
+    res.json({ msg: 'Code verified' });
+
+  } catch (err) {
+    console.error('Code Verify Error:', err);
+    res.status(500).json({ msg: 'Server error during verification' });
+  }
+});
+
+
 
 // Public route to get user profile by email (optional)
 app.get('/api/user-profile/:email', async (req, res) => {
