@@ -107,7 +107,7 @@ app.post('/api/verify', async (req, res) => {
   }
 });
 
-const fetch = require('node-fetch');
+
 // Login route
 app.post('/api/login', async (req, res) => {
   try {
@@ -124,7 +124,9 @@ app.post('/api/login', async (req, res) => {
 
     // 🔒 Check VPN/Proxy using ip-api
     try {
+      const fetch = (await import('node-fetch')).default;
       const response = await fetch(`http://ip-api.com/json/${clientIp}?fields=proxy,hosting,org,query`);
+
       const ipInfo = await response.json();
 
       if (
