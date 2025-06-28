@@ -198,6 +198,7 @@ app.post('/api/request-password-reset', async (req, res) => {
 
   const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
 
+  user.resetCode = code;
   await ResetCode.deleteMany({ email }); // remove previous codes
   await ResetCode.create({
     email,
