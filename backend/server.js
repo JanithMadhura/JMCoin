@@ -187,6 +187,49 @@ app.get('/api/user', authenticateToken, async (req, res) => {
   }
 });
 
+// in server.js or routes/auth.js
+const ResetCode = require('./models/ResetCode');
+const sendVerificationEmail = require('./utils/sendEmail'); // reuse same email function
+
+app.post('/api/request-password-reset', async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ msg: 'User not found' });
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
+
+  await ResetCode.deleteMany({ email }); // remove previous codes
+  await ResetCode.create({
+    email,
+    code,
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 mins
+  });
+
+  try {
+    await sendVerificationEmail(email, code);
+    res.json({ msg: 'Verification code sent' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Failed to send verification email' });
+  }
+});
+
+app.post('/api/reset-password', async (req, res) => {
+  const { email, code, newPassword } = req.body;
+
+  const record = await ResetCode.findOne({ email, code });
+  if (!record) return res.status(400).json({ msg: 'Invalid code' });
+  if (record.expiresAt < new Date()) return res.status(400).json({ msg: 'Code expired' });
+
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  await User.updateOne({ email }, { passwordHash });
+
+  await ResetCode.deleteMany({ email }); // cleanup
+  res.json({ msg: 'Password reset successful' });
+});
+
+
 // Public route to get user profile by email (optional)
 app.get('/api/user-profile/:email', async (req, res) => {
   try {
