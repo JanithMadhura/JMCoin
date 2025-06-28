@@ -256,7 +256,7 @@ app.post('/api/verify-reset-code', async (req, res) => {
     const { email, code } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user || user.resetCode !== code)
+    if (!user || ResetCode.code !== code)
       return res.status(400).json({ msg: 'Invalid code or email' });
 
     if (Date.now() > user.resetCodeExpires)
