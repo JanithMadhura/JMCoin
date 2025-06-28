@@ -83,6 +83,7 @@
         e.preventDefault();
 
         const code = document.getElementById('resetCode').value.trim();
+        console.log(code)
         const email = localStorage.getItem('resetEmail');
 
         if (!email) {
