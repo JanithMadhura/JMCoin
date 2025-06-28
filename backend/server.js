@@ -198,7 +198,6 @@ app.post('/api/request-password-reset', async (req, res) => {
 
   const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
 
-  user.resetCode = code;
   await ResetCode.deleteMany({ email }); // remove previous codes
   await ResetCode.create({
     email,
@@ -251,18 +250,26 @@ app.post('/api/reset-password', async (req, res) => {
   }
 });
 
-app.post('/api/verify-reset-code', async (req, res) => {
+pp.post('/api/verify-reset-code', async (req, res) => {
   try {
     const { email, code } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user || ResetCode.code !== code)
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    const resetEntry = await ResetCode.findOne({ email, code });
+    if (!resetEntry) {
       return res.status(400).json({ msg: 'Invalid code or email' });
+    }
 
-    if (Date.now() > user.resetCodeExpires)
-      return res.status(400).json({ msg: 'Code expired. Request a new one.' });
+    if (Date.now() > resetEntry.expiresAt) {
+      return res.status(400).json({ msg: 'Code expired. Please request a new one.' });
+    }
 
-    res.json({ msg: 'Code verified' });
+    // Optionally delete the code so it's one-time-use
+    await ResetCode.deleteOne({ _id: resetEntry._id });
+
+    res.json({ msg: 'Code verified successfully' });
 
   } catch (err) {
     console.error('Code Verify Error:', err);
