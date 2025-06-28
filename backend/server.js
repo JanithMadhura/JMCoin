@@ -189,7 +189,6 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 
 // in server.js or routes/auth.js
 const ResetCode = require('./models/ResetCode');
-const sendVerificationEmail = require('./utils/sendEmail'); // reuse same email function
 
 app.post('/api/request-password-reset', async (req, res) => {
   const { email } = req.body;
