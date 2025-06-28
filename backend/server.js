@@ -215,17 +215,39 @@ app.post('/api/request-password-reset', async (req, res) => {
 });
 
 app.post('/api/reset-password', async (req, res) => {
-  const { email, code, newPassword } = req.body;
+  try {
+    const { email, code, newPassword } = req.body;
 
-  const record = await ResetCode.findOne({ email, code });
-  if (!record) return res.status(400).json({ msg: 'Invalid code' });
-  if (record.expiresAt < new Date()) return res.status(400).json({ msg: 'Code expired' });
+    const record = await ResetCode.findOne({ email, code });
+    if (!record)
+      return res.status(400).json({ msg: 'Invalid code' });
 
-  const passwordHash = await bcrypt.hash(newPassword, 10);
-  await User.updateOne({ email }, { passwordHash });
+    if (record.expiresAt < new Date())
+      return res.status(400).json({ msg: 'Code expired' });
 
-  await ResetCode.deleteMany({ email }); // cleanup
-  res.json({ msg: 'Password reset successful' });
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ msg: 'User not found' });
+
+    // Hash new password
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    user.passwordHash = passwordHash;
+
+    // Optional: Clean up reset-related fields if they exist in User schema
+    user.resetCode = undefined;
+    user.resetCodeExpires = undefined;
+
+    await user.save();
+
+    // Clean up ResetCode collection
+    await ResetCode.deleteMany({ email });
+
+    res.json({ msg: 'Password reset successful' });
+
+  } catch (err) {
+    console.error('Reset password error:', err);
+    res.status(500).json({ msg: 'Server error during password reset' });
+  }
 });
 
 app.post('/api/verify-reset-code', async (req, res) => {
