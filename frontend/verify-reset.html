@@ -82,7 +82,7 @@
         form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const code = form.code.value.trim();
+        const code = document.getElementById('resetCode').value.trim();
         const email = localStorage.getItem('resetEmail');
 
         if (!email) {
