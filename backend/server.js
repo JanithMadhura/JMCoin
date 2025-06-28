@@ -217,6 +217,7 @@ app.post('/api/request-password-reset', async (req, res) => {
 app.post('/api/reset-password', async (req, res) => {
   try {
     const { email, newPassword } = req.body;
+    console.log('Reset Password Payload:', req.body);
 
     const user = await User.findOne({ email });
     if (!user)
