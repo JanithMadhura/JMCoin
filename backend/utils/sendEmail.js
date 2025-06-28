@@ -13,7 +13,7 @@ async function sendVerificationEmail(email, code) {
         const info = await transporter.sendMail({
         from: `"JMCoin" <${process.env.EMAIL_USER}>`,
         to: email,
-        subject: 'Verify Your Email',
+        subject: 'JMCoin Email Verification Code',
         html: `<h3>Your verification code is: ${code}</h3>`
         });
 

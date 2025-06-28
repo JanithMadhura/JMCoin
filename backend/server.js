@@ -107,7 +107,7 @@ app.post('/api/verify', async (req, res) => {
   }
 });
 
-
+const fetch = require('node-fetch');
 // Login route
 app.post('/api/login', async (req, res) => {
   try {
@@ -121,6 +121,22 @@ app.post('/api/login', async (req, res) => {
 
     // Get real client IP address, trusting reverse proxy headers
     const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+    // 🔒 Check VPN/Proxy using ip-api
+    try {
+      const response = await fetch(`http://ip-api.com/json/${clientIp}?fields=proxy,hosting,org,query`);
+      const ipInfo = await response.json();
+
+      if (
+        ipInfo.proxy ||
+        ipInfo.hosting ||
+        /vpn|cloud|ovh|linode|digitalocean|aws/i.test(ipInfo.org)
+      ) {
+        return res.status(403).json({ msg: 'VPN or proxy detected. Please disable and try again.' });
+      }
+    } catch (err) {
+      console.error('⚠️ VPN check failed:', err.message);
+    }
 
     // Update login IPs, keep last 5 only
     user.loginIps = user.loginIps || [];
