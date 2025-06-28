@@ -243,6 +243,8 @@ app.post('/api/reset-password', async (req, res) => {
     await ResetCode.deleteMany({ email });
 
     res.json({ msg: 'Password reset successful' });
+    // Optionally delete the code so it's one-time-use
+    await ResetCode.deleteOne({ _id: resetEntry._id });
 
   } catch (err) {
     console.error('Reset password error:', err);
@@ -266,8 +268,7 @@ app.post('/api/verify-reset-code', async (req, res) => {
       return res.status(400).json({ msg: 'Code expired. Please request a new one.' });
     }
 
-    // Optionally delete the code so it's one-time-use
-    await ResetCode.deleteOne({ _id: resetEntry._id });
+    
 
     res.json({ msg: 'Code verified successfully' });
 
