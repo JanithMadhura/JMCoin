@@ -8,132 +8,137 @@
     <link rel="stylesheet" href="./assets/css/styles.min.css" />
     <style>
         body {
-        background: linear-gradient(135deg, #3b82f6, #22c55e);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3b82f6, #22c55e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .profile-card {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        padding: 30px;
-        max-width: 500px;
-        width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
         }
 
         .logo-img {
-        width: 100px;
-        height: auto;
-        margin-bottom: 15px;
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
         }
 
         .profile-title {
-        font-weight: 600;
-        font-size: 22px;
+            font-weight: 600;
+            font-size: 22px;
         }
 
         .info-label {
-        font-weight: 500;
-        color: #555;
+            font-weight: 500;
+            color: #555;
         }
 
         .info-value {
-        font-weight: bold;
-        color: #111;
+            font-weight: bold;
+            color: #111;
         }
 
         .ip-list {
-        list-style: none;
-        padding-left: 0;
+            list-style: none;
+            padding-left: 0;
         }
 
         .ip-list li {
-        padding: 5px 0;
-        border-bottom: 1px dashed #ccc;
+            padding: 5px 0;
+            border-bottom: 1px dashed #ccc;
         }
 
         .flag-icon {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 8px;
-        vertical-align: middle;
-        border: 1px solid #ccc;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid #ccc;
         }
-        
     </style>
-    </head>
-    <body>
+</head>
+<body>
 
-    <div class="profile-card text-center">
-        <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
-        <h4 class="profile-title mb-3">My Profile</h4>
+<div class="profile-card text-center">
+    <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
+    <h4 class="profile-title mb-3">My Profile</h4>
 
-        <div class="text-start">
+    <div class="text-start">
         <p><span class="info-label">User ID:</span> <span class="info-value" id="userId">Loading...</span></p>
         <p><span class="info-label">Joined Date:</span> <span class="info-value" id="joinedDate">Loading...</span></p>
         <p><span class="info-label">Recent IP Logins:</span></p>
         <ul class="ip-list" id="ipList">
             <li>Loading IPs...</li>
         </ul>
-        </div>
-
-        <a href="./index.html" class="btn btn-primary mt-4">Back to Dashboard</a>
     </div>
 
-    <script>
-        const email = localStorage.getItem("email");
+    <a href="./index.html" class="btn btn-primary mt-4">Back to Dashboard</a>
+</div>
 
-        async function loadProfile() {
-            try {
-                const res = await fetch(`https://jm-coin.vercel.app/api/user-profile/${email}`);
-                const data = await res.json();
-                document.getElementById("userId").textContent = data.userId;
-                document.getElementById("joinedDate").textContent = new Date(data.joinedAt).toDateString();
+<script>
+    const email = localStorage.getItem("email");
 
-                const ipList = document.getElementById("ipList");
-                ipList.innerHTML = "";
-                // Fetch country code for each IP in parallel
-                const ipPromises = data.recentIps.slice(0, 5).map(async ip => {
-                    try {
-                        const resp = await fetch(`https://ip-api.com/json/${ip.ip}?fields=countryCode`);
-                        const ipData = await resp.json();
-                        return { ...ip, countryCode: ipData.countryCode ? ipData.countryCode.toLowerCase() : null };
-                    } catch {
-                        return { ...ip, countryCode: null };
-                    }
-                });
+    async function loadProfile() {
+        try {
+            const res = await fetch(`https://jm-coin.vercel.app/api/user-profile/${email}`);
+            const data = await res.json();
+            document.getElementById("userId").textContent = data.userId;
+            document.getElementById("joinedDate").textContent = new Date(data.joinedAt).toDateString();
 
-                const ipsWithCountry = await Promise.all(ipPromises);
+            const ipList = document.getElementById("ipList");
+            ipList.innerHTML = "";
 
-                ipsWithCountry.forEach(ip => {
-                    const li = document.createElement("li");
-                    const dateStr = new Date(ip.date).toLocaleString();
+            // Fetch country code for each IP in parallel using ipwhois.app (more reliable than ip-api.com)
+            const ipPromises = data.recentIps.slice(0, 5).map(async ip => {
+                try {
+                    const resp = await fetch(`https://ipwhois.app/json/${ip.ip}`);
+                    const ipData = await resp.json();
+                    return { ...ip, countryCode: ipData.country_code ? ipData.country_code.toLowerCase() : null };
+                } catch {
+                    return { ...ip, countryCode: null };
+                }
+            });
 
-                    if (ip.countryCode) {
-                        const flagImg = document.createElement("img");
-                        flagImg.className = "flag-icon";
-                        flagImg.src = `https://flagcdn.com/24x18/${ip.countryCode}.png`;
-                        flagImg.alt = ip.countryCode.toUpperCase();
-                        li.appendChild(flagImg);
-                    }
+            const ipsWithCountry = await Promise.all(ipPromises);
 
-                    li.append(`${ip.ip} (at ${dateStr})`);
-                    ipList.appendChild(li);
-                });
-            } catch (err) {
-                console.error(err);
-                document.getElementById("ipList").innerHTML = "<li>Error loading IPs</li>";
-            }
+            ipsWithCountry.forEach(ip => {
+                const li = document.createElement("li");
+                const dateStr = new Date(ip.date).toLocaleString();
+
+                if (ip.countryCode) {
+                    const flagImg = document.createElement("img");
+                    flagImg.className = "flag-icon";
+                    flagImg.src = `https://flagcdn.com/24x18/${ip.countryCode}.png`;
+                    flagImg.alt = ip.countryCode.toUpperCase();
+                    // Fallback to placeholder if flag not found
+                    flagImg.onerror = function() {
+                        this.onerror = null;
+                        this.src = "./assets/images/flag-placeholder.png";
+                    };
+                    li.appendChild(flagImg);
+                }
+
+                li.append(`${ip.ip} (at ${dateStr})`);
+                ipList.appendChild(li);
+            });
+        } catch (err) {
+            console.error(err);
+            document.getElementById("ipList").innerHTML = "<li>Error loading IPs</li>";
         }
+    }
 
-        loadProfile();
-    </script>
+    loadProfile();
+</script>
 
 </body>
 </html>
