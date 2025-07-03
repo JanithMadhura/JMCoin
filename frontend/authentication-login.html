@@ -123,7 +123,11 @@
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.msg || 'Login failed');
+      if (!res.ok) {
+        alert(data.msg || 'Login failed');
+        grecaptcha.reset();
+        return;
+      }
 
       // Save JWT token
       localStorage.setItem('token', data.token);
@@ -136,6 +140,7 @@
 
     } catch (err) {
       alert(err.message);
+      grecaptcha.reset();
     }
   });
 </script>
