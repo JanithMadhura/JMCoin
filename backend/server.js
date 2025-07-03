@@ -40,7 +40,23 @@ const sendVerificationEmail = require('./utils/sendEmail');
 
 app.post('/api/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, captcha } = req.body;
+
+    if (!captcha) return res.status(400).json({ msg: 'No captcha token' });
+
+    const fetch = (await import('node-fetch')).default;
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Set this in your .env
+
+    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${secretKey}&response=${captcha}`,
+    });
+    const verifyData = await verifyRes.json();
+
+    if (!verifyData.success) {
+      return res.status(400).json({ msg: 'Failed reCAPTCHA verification' });
+    }
 
     // If user already exists in final users collection
     const existingUser = await User.findOne({ email });

@@ -74,7 +74,7 @@
         <label class="form-label">Password</label>
         <input type="password" name="password" class="form-control" placeholder="Create a password" required />
       </div>
-
+      <div class="g-recaptcha mb-3" data-sitekey="6LdtcnYrAAAAAEow21HEaKDvea5SPaA84C4UKM98"></div>
       <button type="submit" class="btn btn-primary w-100 btn-custom mb-3">Sign Up</button>
 
       <p class="text-center text-small mb-0">Already have an account?
@@ -84,15 +84,24 @@
   </div>
 
   <script>
+    
+
     const form = document.getElementById('registerForm');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const captchaToken = grecaptcha.getResponse();
+      if (!captchaToken) {
+        alert('Please complete the CAPTCHA');
+        return;
+      }
 
       const formData = new FormData(form);
       const data = {
         name: formData.get('name'),
         email: formData.get('email'),
-        password: formData.get('password')
+        password: formData.get('password'),
+        captcha: captchaToken
       };
 
       try {
@@ -122,6 +131,7 @@
 
   <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 
 </html>

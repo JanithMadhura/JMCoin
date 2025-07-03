@@ -17,10 +17,10 @@ async function sendVerificationEmail(email, code) {
         html: `<h3>Your verification code is: ${code}</h3>`
         });
 
-        console.log('✅ Verification email sent to:', email);
+        console.log('Verification email sent to:', email);
         console.log('Message ID:', info.messageId);
     } catch (err) {
-        console.error('❌ Failed to send verification email:', err.message);
+        console.error('Failed to send verification email:', err.message);
         throw new Error('Email sending failed');
     }
 }
