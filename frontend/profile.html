@@ -55,6 +55,17 @@
         padding: 5px 0;
         border-bottom: 1px dashed #ccc;
         }
+
+        .flag-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 8px;
+        vertical-align: middle;
+        border: 1px solid #ccc;
+        }
+        
     </style>
     </head>
     <body>
@@ -78,25 +89,50 @@
     <script>
         const email = localStorage.getItem("email");
 
-        fetch(`https://jm-coin.vercel.app/api/user-profile/${email}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById("userId").textContent = data.userId;
-            document.getElementById("joinedDate").textContent = new Date(data.joinedAt).toDateString();
+        async function loadProfile() {
+            try {
+                const res = await fetch(`https://jm-coin.vercel.app/api/user-profile/${email}`);
+                const data = await res.json();
+                document.getElementById("userId").textContent = data.userId;
+                document.getElementById("joinedDate").textContent = new Date(data.joinedAt).toDateString();
 
-            const ipList = document.getElementById("ipList");
-            ipList.innerHTML = "";
-            data.recentIps.slice(0, 5).forEach(ip => {
-                const li = document.createElement("li");
-                const dateStr = new Date(ip.date).toLocaleString();
-                li.textContent = `${ip.ip} (at ${dateStr})`;
-                ipList.appendChild(li);
-            });
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById("ipList").innerHTML = "<li>Error loading IPs</li>";
-        });
+                const ipList = document.getElementById("ipList");
+                ipList.innerHTML = "";
+                // Fetch country code for each IP in parallel
+                const ipPromises = data.recentIps.slice(0, 5).map(async ip => {
+                    try {
+                        const resp = await fetch(`https://ip-api.com/json/${ip.ip}?fields=countryCode`);
+                        const ipData = await resp.json();
+                        return { ...ip, countryCode: ipData.countryCode ? ipData.countryCode.toLowerCase() : null };
+                    } catch {
+                        return { ...ip, countryCode: null };
+                    }
+                });
+
+                const ipsWithCountry = await Promise.all(ipPromises);
+
+                ipsWithCountry.forEach(ip => {
+                    const li = document.createElement("li");
+                    const dateStr = new Date(ip.date).toLocaleString();
+
+                    if (ip.countryCode) {
+                        const flagImg = document.createElement("img");
+                        flagImg.className = "flag-icon";
+                        flagImg.src = `https://flagcdn.com/24x18/${ip.countryCode}.png`;
+                        flagImg.alt = ip.countryCode.toUpperCase();
+                        li.appendChild(flagImg);
+                    }
+
+                    li.append(`${ip.ip} (at ${dateStr})`);
+                    ipList.appendChild(li);
+                });
+            } catch (err) {
+                console.error(err);
+                document.getElementById("ipList").innerHTML = "<li>Error loading IPs</li>";
+            }
+        }
+
+        loadProfile();
     </script>
 
 </body>
