@@ -127,7 +127,23 @@ app.post('/api/verify', async (req, res) => {
 // Login route
 app.post('/api/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, captcha } = req.body;
+
+    if (!captcha) return res.status(400).json({ msg: 'No captcha token' });
+
+    const fetch = (await import('node-fetch')).default;
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+
+    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${secretKey}&response=${captcha}`,
+    });
+    const verifyData = await verifyRes.json();
+
+    if (!verifyData.success) {
+      return res.status(400).json({ msg: 'Failed reCAPTCHA verification' });
+    }
 
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ msg: 'User not found' });

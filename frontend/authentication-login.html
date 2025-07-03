@@ -88,7 +88,7 @@
         </div>
         <a href="forget-password.html" class="text-small text-link">Forgot Password?</a>
       </div>
-
+      <div class="g-recaptcha mb-3" data-sitekey="6LdtcnYrAAAAAEow21HEaKDvea5SPaA84C4UKM98"></div>
       <button type="submit" class="btn btn-primary w-100 btn-custom mb-3">Sign In</button>
 
       <p class="text-center text-small mb-0">New here?
@@ -99,11 +99,18 @@
 
   <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
   <script>
   const loginForm = document.querySelector('form');
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const captchaToken = grecaptcha.getResponse();
+    if (!captchaToken) {
+      alert('Please complete the CAPTCHA');
+      return;
+    }
 
     const email = loginForm.querySelector('input[type="email"]').value;
     const password = loginForm.querySelector('input[type="password"]').value;
@@ -112,7 +119,7 @@
       const res = await fetch('https://jm-coin.vercel.app/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, captcha: captchaToken })
       });
 
       const data = await res.json();
