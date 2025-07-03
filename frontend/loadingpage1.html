@@ -1,303 +1,301 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>JMCoin Earning</title>
   <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
   <link rel="stylesheet" href="./assets/css/styles.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #3b82f6 0%, #22c55e 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .sidebar-animated {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background: rgba(255,255,255,0.85);
+      box-shadow: 2px 0 24px rgba(0,0,0,0.08);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      transform: translateX(0);
+      transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+    }
+    .sidebar-animated.closed {
+      transform: translateX(-100%);
+      box-shadow: none;
+    }
+    .main-content {
+      margin-left: 260px;
+      transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+      padding: 32px 16px 0 16px;
+    }
+    .main-content.full {
+      margin-left: 0;
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.92);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      padding: 32px;
+      margin-bottom: 32px;
+      transition: box-shadow 0.2s;
+    }
+    .glass-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    }
+    .hamburger {
+      position: fixed;
+      top: 18px;
+      left: 260px; /* aligns with the right edge of the sidebar */
+      width: 40px;
+      height: 40px;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.85);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      cursor: pointer;
+      transition: background 0.2s, left 0.3s cubic-bezier(.4,2,.6,1);
+    }
+    .hamburger:hover {
+      background: rgba(255,255,255,1);
+    }
+    .hamburger-bar {
+      width: 24px;
+      height: 3px;
+      background: #3b82f6;
+      margin: 3px 0;
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(.4,2,.6,1);
+    }
+    .hamburger.active .bar1 {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active .bar2 {
+      opacity: 0;
+    }
+    .hamburger.active .bar3 {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+    .sidebar-nav .sidebar-item .sidebar-link.has-arrow:after {
+      content: '';
+      display: inline-block;
+      margin-left: 8px;
+      border: solid #3b82f6;
+      border-width: 0 2px 2px 0;
+      padding: 3px;
+      transform: rotate(45deg);
+      transition: transform 0.2s;
+    }
+    .sidebar-nav .sidebar-item .sidebar-link.has-arrow.open:after {
+      transform: rotate(-135deg);
+    }
+    @media (max-width: 900px) {
+      .sidebar-animated {
+        width: 220px;
+      }
+      .main-content {
+        margin-left: 0;
+        padding-top: 80px;
+      }
+      .hamburger {
+        left: 220px;
+      }
+    }
+    @media (max-width: 600px) {
+      .glass-card {
+        padding: 16px;
+      }
+      .main-content {
+        padding: 12px 4px 0 4px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-  <!--  Body Wrapper -->
-  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
+  <!-- Hamburger Button (always visible) -->
+  <div class="hamburger" id="sidebarToggle">
+    <div class="hamburger-bar bar1"></div>
+    <div class="hamburger-bar bar2"></div>
+    <div class="hamburger-bar bar3"></div>
+  </div>
 
-    <!--  App Topstrip -->
-
-
+  <!-- Sidebar -->
+  <aside class="sidebar-animated" id="sidebar">
+    <div class="brand-logo d-flex align-items-center justify-content-between p-3" style="position: relative;">
+      <a href="./index.html" class="text-nowrap logo-img">
+        <img src="assets/images/logos/jmc.jpg" alt="logo" style="width:120px; height:auto;"/>
+      </a>
     </div>
-    <!-- Sidebar Start -->
-  <aside class="left-sidebar">
-    <!-- Sidebar scroll-->
-    <div>
-      <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="./index.html" class="text-nowrap logo-img">
-          <img src="assets/images/logos/jmc.jpg" alt="logo" style="width:150px; height:auto;"/>
-        </a>
-        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-          <i class="ti ti-x fs-6"></i>
+    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+      <ul id="sidebarnav" style="padding-left: 0;">
+        <li class="nav-small-cap" style="margin: 16px 0 8px 16px; color: #888;">
+          <span class="hide-menu">Navigation</span>
+        </li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./index.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./profile.html"><i class="ti ti-user"></i> User Profile</a></li>
+        <li class="sidebar-item">
+          <a class="sidebar-link has-arrow" href="javascript:void(0)" id="earnToggle"><i class="ti ti-coin"></i> Earn</a>
+          <ul id="earnSubmenu" aria-expanded="false" class="collapse first-level" style="padding-left: 18px; display: none;">
+            <li class="sidebar-item"><a href="./earn-cpx.html" class="sidebar-link"><i class="ti ti-arrow-narrow-right"></i> CPX</a></li>
+            <li class="sidebar-item"><a href="./earn-bitlabs.html" class="sidebar-link"><i class="ti ti-arrow-narrow-right"></i> Bitlabs</a></li>
+          </ul>
+        </li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./withdraw.html"><i class="ti ti-currency-dollar"></i> Withdraw</a></li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./contact.html"><i class="ti ti-phone"></i> Contact Us</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    <div class="container py-4">
+      <div class="row">
+        <!-- Main Balance Card -->
+        <div class="col-lg-12 mb-4">
+          <div class="glass-card d-flex align-items-center justify-content-between flex-wrap">
+            <div>
+              <h4 class="card-title mb-1">Main Balance</h4>
+              <p class="card-subtitle text-muted">Total Earnings Available</p>
+            </div>
+            <h2 id="balance" class="text-success mb-0 fw-bold">Loading...</h2>
+          </div>
+        </div>
+        <!-- Earnings Overview Section -->
+        <div class="col-lg-12">
+          <div class="glass-card">
+            <div class="d-md-flex align-items-center mb-3">
+              <div>
+                <h4 class="card-title mb-0">User Earnings Overview</h4>
+                <p class="card-subtitle text-muted">Weekly earnings from CPX and Bitlabs</p>
+              </div>
+            </div>
+            <div id="sales-overview" style="height: 320px;"></div>
+          </div>
         </div>
       </div>
-
-      <!-- Sidebar navigation -->
-      <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-        <ul id="sidebarnav">
-          <li class="nav-small-cap">
-            <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
-            <span class="hide-menu">Navigation</span>
-          </li>
-
-          <!-- Dashboard -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./index.html">
-              <i class="ti ti-layout-dashboard"></i>
-              <span class="hide-menu">Dashboard</span>
-            </a>
-          </li>
-
-          <!-- User Profile -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./profile.html">
-              <i class="ti ti-user"></i>
-              <span class="hide-menu">User Profile</span>
-            </a>
-          </li>
-
-          <!-- Earn (Dropdown) -->
-          <li class="sidebar-item">
-            <a class="sidebar-link has-arrow" href="javascript:void(0)">
-              <i class="ti ti-coin"></i>
-              <span class="hide-menu">Earn</span>
-            </a>
-            <ul aria-expanded="false" class="collapse first-level">
-              <li class="sidebar-item">
-                <a href="./earn-cpx.html" class="sidebar-link">
-                  <i class="ti ti-arrow-narrow-right"></i>
-                  <span class="hide-menu">CPX</span>
-                </a>
-              </li>
-              <li class="sidebar-item">
-                <a href="./earn-bitlabs.html" class="sidebar-link">
-                  <i class="ti ti-arrow-narrow-right"></i>
-                  <span class="hide-menu">Bitlabs</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- Withdraw -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./withdraw.html">
-              <i class="ti ti-currency-dollar"></i>
-              <span class="hide-menu">Withdraw</span>
-            </a>
-          </li>
-
-          <!-- Contact Us -->
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="./contact.html">
-              <i class="ti ti-phone"></i>
-              <span class="hide-menu">Contact Us</span>
-            </a>
-          </li>
-
-        </ul>
-      </nav>
-      <!-- End Sidebar navigation -->
-    </div>
-  </aside>
-  <!-- Sidebar End -->
-
-    <!--  Sidebar End -->
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-      <!--  Header Start -->
-      <header class="app-header">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <ul class="navbar-nav">
-            <li class="nav-item d-block d-xl-none">
-              <a class="nav-link sidebartoggler " id="headerCollapse" href="javascript:void(0)">
-                <i class="ti ti-menu-2"></i>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link " href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="ti ti-bell"></i>
-                <div class="notification bg-primary rounded-circle"></div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-animate-up" aria-labelledby="drop1">
-                <div class="message-body">
-                  <a href="javascript:void(0)" class="dropdown-item">
-                    Item 1
-                  </a>
-                  <a href="javascript:void(0)" class="dropdown-item">
-                    Item 2
-                  </a>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-               
-              <li class="nav-item dropdown">
-                <a class="nav-link " href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src="./assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                  <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-user fs-6"></i>
-                      <p class="mb-0 fs-3">My Profile</p>
-                    </a>
-                    
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-3">History</p>
-                    </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-      <!--  Header End -->
-      <div class="body-wrapper">
-        <div class="container py-4">
-          <div class="row">
-            <!-- Main Balance Card -->
-            <div class="col-lg-12 mb-4">
-              <div class="card">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                  <div>
-                    <h4 class="card-title mb-1">Main Balance</h4>
-                    <p class="card-subtitle text-muted">Total Earnings Available</p>
-                  </div>
-                  <h2 id="balance" class="text-success mb-0 fw-bold">Loading...</h2>
-                </div>
-              </div>
-            </div>
-            <!-- Earnings Overview Section -->
-            <div class="col-lg-12">
-              <div class="card-body">
-                <div class="d-md-flex align-items-center mb-3">
-                  <div>
-                    <h4 class="card-title mb-0">User Earnings Overview</h4>
-                    <p class="card-subtitle text-muted">Weekly earnings from CPX and Bitlabs</p>
-                  </div>
-                </div>
-                <div id="sales-overview" style="height: 320px;"></div>
-              </div>
-            </div>
-
-      <!-- ✅ Add this before </body> to load ApexCharts -->
-      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-      <!-- ✅ Chart Rendering Script -->
-      <script>
-        var options = {
-          chart: {
-            type: 'bar',
-            height: 320,
-            toolbar: { show: false }
-          },
-          series: [
-            {
-              name: 'CPX',
-              data: [120, 90, 150, 80, 70, 110, 95]
-            },
-            {
-              name: 'Bitlabs',
-              data: [100, 60, 130, 90, 50, 120, 100]
-            }
-          ],
-          xaxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            title: { text: 'Day of Week' }
-          },
-          yaxis: {
-            title: { text: 'Earnings ($)' }
-          },
-          colors: ['#3b82f6', '#22c55e'],
-          plotOptions: {
-            bar: {
-              horizontal: false,
-              columnWidth: '50%',
-              endingShape: 'rounded'
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-          },
-          fill: {
-            opacity: 1
-          },
-          tooltip: {
-            y: {
-              formatter: function (val) {
-                return "$" + val;
-              }
-            }
-          },
-          legend: {
-            position: 'top'
-          }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#sales-overview"), options);
-        chart.render();
-      </script>
-
-            
-  
-          <div class="py-6 px-6 text-center">
-            <p class="mb-0 fs-4">Design and Developed by <a href="#"
-                class="pe-1 text-primary text-decoration-underline">JMCoin</a></p>
-          </div>
-        </div>
+      <div class="py-6 px-6 text-center">
+        <p class="mb-0 fs-4">Design and Developed by <a href="#" class="pe-1 text-primary text-decoration-underline">JMCoin</a></p>
       </div>
     </div>
   </div>
-  <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./assets/js/sidebarmenu.js"></script>
-  <script src="./assets/js/app.min.js"></script>
-  <script src="./assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="./assets/js/dashboard.js"></script>
-  <!-- solar icons -->
+
+  <!-- ApexCharts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
-  async function fetchUserData() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Please login first');
-      window.location.href = '/authentication-login.html';
-      return;
-    }
+    var options = {
+      chart: {
+        type: 'bar',
+        height: 320,
+        toolbar: { show: false }
+      },
+      series: [
+        {
+          name: 'CPX',
+          data: [120, 90, 150, 80, 70, 110, 95]
+        },
+        {
+          name: 'Bitlabs',
+          data: [100, 60, 130, 90, 50, 120, 100]
+        }
+      ],
+      xaxis: {
+        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        title: { text: 'Day of Week' }
+      },
+      yaxis: {
+        title: { text: 'Earnings ($)' }
+      },
+      colors: ['#3b82f6', '#22c55e'],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '50%',
+          endingShape: 'rounded'
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$" + val;
+          }
+        }
+      },
+      legend: {
+        position: 'top'
+      }
+    };
 
-    try {
-      const res = await fetch('https://jm-coin.vercel.app/api/dashboard', {
-        method: 'GET',
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.msg || 'Failed to fetch data');
+    var chart = new ApexCharts(document.querySelector("#sales-overview"), options);
+    chart.render();
+  </script>
 
-      // Update balance on page
-      document.querySelector('#balance').textContent = data.balance + ' JMC';
+  <!-- Sidebar Animation Script -->
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    sidebarToggle.addEventListener('click', function() {
+      sidebar.classList.toggle('closed');
+      sidebarToggle.classList.toggle('active');
+      mainContent.classList.toggle('full');
+    });
 
-    } catch (err) {
-      alert(err.message);
-      // Redirect to login if unauthorized
-      if (err.message === 'Token is not valid' || err.message === 'No token, authorization denied') {
+    // Earn submenu toggle
+    const earnToggle = document.getElementById('earnToggle');
+    const earnSubmenu = document.getElementById('earnSubmenu');
+    earnToggle.addEventListener('click', function() {
+      const isOpen = earnSubmenu.style.display === "block";
+      earnSubmenu.style.display = isOpen ? "none" : "block";
+      earnToggle.classList.toggle("open", !isOpen);
+    });
+  </script>
+
+  <!-- User Data Fetch -->
+  <script>
+    async function fetchUserData() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please login first');
         window.location.href = '/authentication-login.html';
+        return;
+      }
+
+      try {
+        const res = await fetch('https://jm-coin.vercel.app/api/dashboard', {
+          method: 'GET',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.msg || 'Failed to fetch data');
+        document.querySelector('#balance').textContent = data.balance + ' JMC';
+      } catch (err) {
+        alert(err.message);
+        if (err.message === 'Token is not valid' || err.message === 'No token, authorization denied') {
+          window.location.href = '/authentication-login.html';
+        }
       }
     }
-  }
-
-  fetchUserData();
-</script>
-  
+    fetchUserData();
+  </script>
 </body>
-
-</html>
