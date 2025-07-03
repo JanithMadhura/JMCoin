@@ -2,83 +2,129 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>JMCoin</title>
+    <title>JMCoin - Earn for Your Opinion</title>
     <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
     <link rel="stylesheet" href="./assets/css/styles.min.css" />
-
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JMCoin - Earn for Your Opinion</title>
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
         body, html {
-        height: 100%;
-        margin: 0;
-        background: linear-gradient(135deg, #f0f4ff, #dff2ff);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #3b82f6 0%, #22c55e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
         }
-
         .landing-container {
-        background: #ffffff;
-        padding: 3rem;
-        border-radius: 1.5rem;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        max-width: 420px;
-        text-align: center;
-        animation: fadeIn 0.8s ease-in-out;
+            background: rgba(255,255,255,0.92);
+            padding: 3rem 2rem 2.5rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            margin-top: 5vh;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s;
         }
-
         .logo-img {
-        width: 120px;
-        height: auto;
-        margin-bottom: 1.5rem;
+            width: 110px;
+            height: auto;
+            margin-bottom: 1.2rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(59,130,246,0.10);
         }
-
         h1 {
-        font-size: 1.9rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: #2c3e50;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2563eb;
+            letter-spacing: 1px;
         }
-
         .intro-text {
-        font-size: 1.1rem;
-        color: #555;
-        margin-bottom: 2rem;
+            font-size: 1.13rem;
+            color: #444;
+            margin-bottom: 2rem;
         }
-
         .btn-custom {
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 0.75rem;
-        transition: all 0.3s ease-in-out;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s cubic-bezier(.4,2,.6,1);
+            font-weight: 500;
         }
-
         .btn-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 16px rgba(34,197,94,0.13);
         }
-
+        .features-section {
+            max-width: 900px;
+            margin: 48px auto 0 auto;
+            padding: 2.5rem 2rem;
+            background: rgba(255,255,255,0.85);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(59,130,246,0.10);
+            backdrop-filter: blur(8px);
+        }
+        .features-section h2 {
+            color: #2563eb;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+        .feature-card {
+            border: none;
+            border-radius: 1.1rem;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.07);
+            background: rgba(255,255,255,0.96);
+            transition: box-shadow 0.2s, transform 0.2s;
+            margin-bottom: 1.5rem;
+            padding: 2rem 1.2rem 1.5rem 1.2rem;
+        }
+        .feature-card:hover {
+            box-shadow: 0 12px 40px rgba(34,197,94,0.13);
+            transform: translateY(-4px) scale(1.03);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            margin-bottom: 0.7rem;
+            background: linear-gradient(135deg, #3b82f6 60%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .feature-card h5 {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .feature-card p {
+            color: #444;
+            font-size: 1.01rem;
+        }
+        @media (max-width: 900px) {
+            .features-section {
+                padding: 1.5rem 0.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .landing-container {
+                padding: 1.5rem 0.5rem 1.2rem 0.5rem;
+            }
+            .features-section {
+                padding: 1.2rem 0.2rem;
+            }
+        }
         @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
+            from { opacity: 0; transform: scale(0.95);}
+            to { opacity: 1; transform: scale(1);}
         }
     </style>
 </head>
@@ -86,16 +132,44 @@
 <body>
     <div class="landing-container">
         <img src="assets/images/logos/jmc.jpg" alt="JMCoin Logo" class="logo-img" />
-
         <h1>Welcome to JMCoin</h1>
-        <p class="intro-text">Your opinion matters. Complete surveys and earn money.</p>
-
+        <p class="intro-text">Earn money with offerwalls, surveys, and much more!</p>
         <a href="authentication-login.html" class="btn btn-primary btn-custom">Login</a>
         <a href="authentication-register.html" class="btn btn-outline-primary btn-custom">Sign Up</a>
     </div>
 
+    <!-- Features / How It Works Section -->
+    <section class="features-section">
+        <h2 class="text-center mb-4">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card text-center h-100">
+                    <div class="feature-icon"><i class="bi bi-bar-chart-steps"></i></div>
+                    <h5 class="mb-2">CPX Research</h5>
+                    <p class="mb-0">Earn by completing high-paying surveys from CPX Research. Surveys are updated daily and are available worldwide.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card text-center h-100">
+                    <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h5 class="mb-2">Bitlabs Surveys</h5>
+                    <p class="mb-0">Access a wide variety of surveys from Bitlabs. The more you participate, the more you earn!</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card text-center h-100">
+                    <div class="feature-icon"><i class="bi bi-currency-bitcoin"></i></div>
+                    <h5 class="mb-2">FaucetPay Payouts</h5>
+                    <p class="mb-0">Withdraw your earnings instantly to your FaucetPay wallet. Fast, secure, and easy micro-payments.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <span class="text-muted">More earning methods and payout options are coming soon!</span>
+        </div>
+    </section>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-
+</body>
 </html>
