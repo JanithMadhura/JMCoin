@@ -102,6 +102,45 @@
       display: none;
       text-align: center;
     }
+    /* Notification Card Styles */
+    #notifyCard {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(16,23,42,0.45);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s;
+    }
+    .notify-inner {
+      background: rgba(30,41,59,0.97);
+      color: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      padding: 32px 28px 24px 28px;
+      min-width: 280px;
+      max-width: 90vw;
+      text-align: center;
+      position: relative;
+      font-size: 1.1rem;
+      animation: fadeIn 0.3s;
+    }
+    #notifyClose {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    #notifyClose:hover {
+      opacity: 1;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.95);}
       to { opacity: 1; transform: scale(1);}
@@ -155,52 +194,74 @@
     </form>
   </div>
 
+  <!-- Notification Card -->
+  <div id="notifyCard">
+    <div class="notify-inner">
+      <span id="notifyMsg"></span>
+      <button id="notifyClose" aria-label="Close">&times;</button>
+    </div>
+  </div>
+
   <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
   <script>
-  const loginForm = document.querySelector('form');
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const captchaToken = grecaptcha.getResponse();
-    if (!captchaToken) {
-      alert('Please complete the CAPTCHA');
-      return;
+    // Notification helper
+    function showNotify(msg, timeout = 3000) {
+      const card = document.getElementById('notifyCard');
+      const msgSpan = document.getElementById('notifyMsg');
+      msgSpan.textContent = msg;
+      card.style.display = 'flex';
+      if (timeout > 0) {
+        setTimeout(() => { card.style.display = 'none'; }, timeout);
+      }
     }
+    document.getElementById('notifyClose').onclick = function() {
+      document.getElementById('notifyCard').style.display = 'none';
+    };
 
-    const email = loginForm.querySelector('input[type="email"]').value;
-    const password = loginForm.querySelector('input[type="password"]').value;
+    const loginForm = document.querySelector('form');
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    try {
-      const res = await fetch('https://jm-coin.vercel.app/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, captcha: captchaToken })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.msg || 'Login failed');
-        grecaptcha.reset();
+      const captchaToken = grecaptcha.getResponse();
+      if (!captchaToken) {
+        showNotify('Please complete the CAPTCHA');
         return;
       }
 
-      // Save JWT token
-      localStorage.setItem('token', data.token);
+      const email = loginForm.querySelector('input[type="email"]').value;
+      const password = loginForm.querySelector('input[type="password"]').value;
 
-      // Optionally save user email or other data
-      localStorage.setItem('email', data.user.email);
+      try {
+        const res = await fetch('https://jm-coin.vercel.app/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, captcha: captchaToken })
+        });
 
-      // Redirect to dashboard page
-      window.location.href = './loadingpage1.html';
+        const data = await res.json();
+        if (!res.ok) {
+          showNotify('Login failed');
+          grecaptcha.reset();
+          return;
+        }
 
-    } catch (err) {
-      alert(err.message);
-      grecaptcha.reset();
-    }
-  });
+        // Save JWT token
+        localStorage.setItem('token', data.token);
+
+        // Optionally save user email or other data
+        localStorage.setItem('email', data.user.email);
+
+        // Redirect to dashboard page
+        window.location.href = './loadingpage1.html';
+
+      } catch (err) {
+        showNotify(err.message);
+        grecaptcha.reset();
+      }
+    });
   </script>
 </body>
 </html>

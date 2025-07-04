@@ -99,6 +99,44 @@
             font-size: 1rem;
             margin-bottom: 1rem;
         }
+        #notifyCard {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(16,23,42,0.45);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+            }
+            .notify-inner {
+            background: rgba(30,41,59,0.97);
+            color: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 32px 28px 24px 28px;
+            min-width: 280px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+            font-size: 1.1rem;
+            animation: fadeIn 0.3s;
+            }
+            #notifyClose {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            }
+            #notifyClose:hover {
+            opacity: 1;
+            }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95);}
             to { opacity: 1; transform: scale(1);}
@@ -116,6 +154,13 @@
 </head>
 
 <body>
+    <div id="notifyCard" style="display:none;">
+        <div class="notify-inner">
+            <span id="notifyMsg"></span>
+            <button id="notifyClose" aria-label="Close">&times;</button>
+        </div>
+    </div>
+
     <div class="verify-card">
         <div class="text-center">
             <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
@@ -138,6 +183,20 @@
     </div>
 
     <script>
+
+        function showNotify(msg, timeout = 3000) {
+            const card = document.getElementById('notifyCard');
+            const msgSpan = document.getElementById('notifyMsg');
+            msgSpan.textContent = msg;
+            card.style.display = 'flex';
+            // Optional: auto-close after timeout
+            if (timeout > 0) {
+                setTimeout(() => { card.style.display = 'none'; }, timeout);
+            }
+        }
+        document.getElementById('notifyClose').onclick = function() {
+            document.getElementById('notifyCard').style.display = 'none';
+        };
         const form = document.getElementById('verifyResetForm');
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -146,7 +205,7 @@
             const email = localStorage.getItem('resetEmail');
 
             if (!email) {
-                alert('No email found. Please request reset again.');
+                showNotify('No email found. Please request reset again.');
                 window.location.href = './forgot-password.html';
                 return;
             }
@@ -161,14 +220,14 @@
                 const result = await res.json();
 
                 if (res.ok) {
-                    alert(result.msg || 'Code verified. Now set new password.');
+                    showNotify('Code verified. Now set new password.');
                     localStorage.setItem('resetVerified', 'true');
                     window.location.href = './new-password.html';
                 } else {
-                    alert(result.msg || 'Invalid or expired code');
+                    showNotify('Invalid or expired code');
                 }
             } catch (err) {
-                alert('Error verifying code');
+                showNotify('Error verifying code');
                 console.error(err);
             }
         });
