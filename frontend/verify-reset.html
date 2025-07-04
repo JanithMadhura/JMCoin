@@ -7,116 +7,174 @@
     <title>Verify Reset Code | JMCoin</title>
     <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
     <link rel="stylesheet" href="./assets/css/styles.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body {
-        background: linear-gradient(135deg, #3b82f6, #22c55e);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
         }
-
-        .verify-card {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        padding: 30px;
-        width: 100%;
-        max-width: 420px;
+        .verify-card, .auth-card, .profile-card, .reset-card, .register-card, .login-card {
+            background: rgba(30,41,59,0.92);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 36px 28px 32px 28px;
+            max-width: 440px;
+            width: 100%;
+            color: #fff;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s;
+            margin: 32px auto;
         }
-
         .logo-img {
-        width: 120px;
-        height: auto;
-        margin: 0 auto 15px;
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(59,130,246,0.10);
         }
-
+        .fw-semibold {
+            font-weight: 600;
+        }
+        .auth-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #38bdf8;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+        }
         .form-control {
-        border-radius: 10px;
-        text-align: center;
-        letter-spacing: 5px;
-        font-size: 20px;
+            border-radius: 10px;
+            background: #222b3a;
+            color: #fff;
+            border: 1px solid #334155;
+            margin-bottom: 1rem;
+            text-align: center;
+            letter-spacing: 5px;
+            font-size: 20px;
         }
-
-        .btn-custom {
-        border-radius: 12px;
-        font-size: 16px;
-        padding: 10px 0;
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px #3b82f6;
+            background: #1e293b;
+            color: #fff;
         }
-
+        .btn-primary, .btn-custom {
+            background: linear-gradient(90deg, #3b82f6 60%, #22c55e 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            padding: 0.7rem 1.5rem;
+            margin-top: 1.5rem;
+            transition: box-shadow 0.2s, transform 0.2s;
+            width: 100%;
+        }
+        .btn-primary:hover, .btn-custom:hover {
+            box-shadow: 0 8px 24px rgba(34,197,94,0.13);
+            transform: translateY(-2px) scale(1.03);
+            color: #fff;
+        }
         .text-small {
-        font-size: 14px;
+            font-size: 14px;
         }
-
         .text-link {
-        color: #3b82f6;
+            color: #38bdf8;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .text-link:hover {
+            color: #22c55e;
+        }
+        .form-label {
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        .alert {
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95);}
+            to { opacity: 1; transform: scale(1);}
+        }
+        @media (max-width: 600px) {
+            .verify-card, .auth-card, .profile-card, .reset-card, .register-card, .login-card {
+                padding: 18px 4px 16px 4px;
+                max-width: 98vw;
+            }
+            .logo-img {
+                width: 70px;
+            }
         }
     </style>
-    </head>
+</head>
 
-    <body>
+<body>
     <div class="verify-card">
         <div class="text-center">
-        <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
-        <h4 class="fw-semibold mt-3 mb-1">Password Reset Verification</h4>
-        <p class="text-muted text-small">Enter the code sent to your email</p>
+            <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
+            <h4 class="fw-semibold mt-3 mb-1" style="color: #fff;">Password Reset Verification</h4>
+            <p class="text-small" style="color:#fff;">Enter the code sent to your email</p>
         </div>
 
         <form id="verifyResetForm">
-        <div class="mb-4">
-            <label class="form-label">Verification Code</label>
-            <input type="text" id="resetCode" name="code" maxlength="6" class="form-control" placeholder="------" required />
-        </div>
+            <div class="mb-4">
+                <label class="form-label">Verification Code</label>
+                <input type="text" id="resetCode" name="code" maxlength="6" class="form-control" placeholder="------" required />
+            </div>
 
-        <button type="submit" class="btn btn-primary w-100 btn-custom mb-3">Verify Code</button>
+            <button type="submit" class="btn btn-primary btn-custom mb-3">Verify Code</button>
 
-        <p class="text-center text-small mb-0">
-            Didn't get the code? <a href="./forget-password.html" class="text-link">Try Again</a>
-        </p>
+            <p class="text-center text-small mb-0" style="color:#fff;">
+                Didn't get the code? <a href="./forget-password.html" class="text-link">Try Again</a>
+            </p>
         </form>
     </div>
 
     <script>
         const form = document.getElementById('verifyResetForm');
         form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+            e.preventDefault();
 
-        const code = document.getElementById('resetCode').value.trim();
-        console.log(code)
-        const email = localStorage.getItem('resetEmail');
+            const code = document.getElementById('resetCode').value.trim();
+            const email = localStorage.getItem('resetEmail');
 
-        if (!email) {
-            alert('No email found. Please request reset again.');
-            window.location.href = './forgot-password.html';
-            return;
-        }
-
-        try {
-            const res = await fetch('https://jm-coin.vercel.app/api/verify-reset-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, code }),
-            });
-
-            const result = await res.json();
-
-            if (res.ok) {
-            alert(result.msg || 'Code verified. Now set new password.');
-            localStorage.setItem('resetVerified', 'true');
-            window.location.href = './new-password.html';
-            } else {
-            alert(result.msg || 'Invalid or expired code');
+            if (!email) {
+                alert('No email found. Please request reset again.');
+                window.location.href = './forgot-password.html';
+                return;
             }
-        } catch (err) {
-            alert('Error verifying code');
-            console.error(err);
-        }
+
+            try {
+                const res = await fetch('https://jm-coin.vercel.app/api/verify-reset-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code }),
+                });
+
+                const result = await res.json();
+
+                if (res.ok) {
+                    alert(result.msg || 'Code verified. Now set new password.');
+                    localStorage.setItem('resetVerified', 'true');
+                    window.location.href = './new-password.html';
+                } else {
+                    alert(result.msg || 'Invalid or expired code');
+                }
+            } catch (err) {
+                alert('Error verifying code');
+                console.error(err);
+            }
         });
     </script>
 
     <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-
+</body>
 </html>
