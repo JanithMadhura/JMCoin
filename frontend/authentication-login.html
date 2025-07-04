@@ -7,65 +7,123 @@
   <title>Login | JMCoin</title>
   <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
   <link rel="stylesheet" href="./assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
     body {
-      background: linear-gradient(135deg, #3b82f6, #22c55e);
+      background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Segoe UI', sans-serif;
+      margin: 0;
     }
-
-    .login-card {
-      background: rgba(255, 255, 255, 0.9);
+    .login-card, .auth-card, .reset-card, .register-card, .profile-card {
+      background: rgba(30,41,59,0.92);
       border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      padding: 36px 28px 32px 28px;
+      max-width: 440px;
       width: 100%;
-      max-width: 400px;
+      color: #fff;
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.8s;
+      margin: 32px auto;
     }
-
     .logo-img {
-      width: 120px;
+      width: 100px;
       height: auto;
-      margin: 0 auto 15px;
+      margin-bottom: 15px;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(59,130,246,0.10);
     }
-
+    .fw-semibold {
+      font-weight: 600;
+    }
+    .auth-title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #38bdf8;
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
     .form-control {
       border-radius: 10px;
+      background: #222b3a;
+      color: #fff;
+      border: 1px solid #334155;
+      margin-bottom: 1rem;
     }
-
-    .btn-custom {
-      border-radius: 12px;
-      font-size: 16px;
-      padding: 10px 0;
+    .form-control:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px #3b82f6;
+      background: #1e293b;
+      color: #fff;
     }
-
+    .btn-primary, .btn-custom {
+      background: linear-gradient(90deg, #3b82f6 60%, #22c55e 100%);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      padding: 0.7rem 1.5rem;
+      margin-top: 1.5rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+      width: 100%;
+    }
+    .btn-primary:hover, .btn-custom:hover {
+      box-shadow: 0 8px 24px rgba(34,197,94,0.13);
+      transform: translateY(-2px) scale(1.03);
+      color: #fff;
+    }
     .text-small {
       font-size: 14px;
     }
-
     .text-link {
-      color: #3b82f6;
+      color: #38bdf8;
+      text-decoration: underline;
+      cursor: pointer;
     }
-
+    .text-link:hover {
+      color: #22c55e;
+    }
+    .form-label {
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+    .alert {
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
     #errorMsg {
-      color: red;
+      color: #ff6b6b;
       margin-bottom: 15px;
       display: none;
       text-align: center;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
+    @media (max-width: 600px) {
+      .login-card, .auth-card, .reset-card, .register-card, .profile-card {
+        padding: 18px 4px 16px 4px;
+        max-width: 98vw;
+      }
+      .logo-img {
+        width: 70px;
+      }
     }
   </style>
 </head>
 
 <body>
-
   <div class="login-card">
     <div class="text-center">
       <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
-      <h4 class="fw-semibold mt-3 mb-1">Welcome Back</h4>
-      <p class="text-muted text-small">Sign in to your JMCoin account</p>
+      <h4 class="fw-semibold mt-3 mb-1" style="color: #fff;">Welcome Back</h4>
+      <p class="text-small" style="color:#fff;">Sign in to your JMCoin account</p>
     </div>
 
     <form id="loginForm">
@@ -89,9 +147,9 @@
         <a href="forget-password.html" class="text-small text-link">Forgot Password?</a>
       </div>
       <div class="g-recaptcha mb-3" data-sitekey="6LdtcnYrAAAAAEow21HEaKDvea5SPaA84C4UKM98"></div>
-      <button type="submit" class="btn btn-primary w-100 btn-custom mb-3">Sign In</button>
+      <button type="submit" class="btn btn-primary btn-custom mb-3">Sign In</button>
 
-      <p class="text-center text-small mb-0">New here?
+      <p class="text-center text-small mb-0" style="color:#fff;">New here?
         <a href="./authentication-register.html" class="text-link">Create an account</a>
       </p>
     </form>
@@ -119,31 +177,4 @@
       const res = await fetch('https://jm-coin.vercel.app/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, captcha: captchaToken })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.msg || 'Login failed');
-        grecaptcha.reset();
-        return;
-      }
-
-      // Save JWT token
-      localStorage.setItem('token', data.token);
-
-      // Optionally save user email or other data
-      localStorage.setItem('email', data.user.email);
-
-      // Redirect to dashboard page
-      window.location.href = './loadingpage1.html';
-
-    } catch (err) {
-      alert(err.message);
-      grecaptcha.reset();
-    }
-  });
-</script>
-</body>
-
-</html>
+       
