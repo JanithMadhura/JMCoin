@@ -177,4 +177,30 @@
       const res = await fetch('https://jm-coin.vercel.app/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-       
+        body: JSON.stringify({ email, password, captcha: captchaToken })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.msg || 'Login failed');
+        grecaptcha.reset();
+        return;
+      }
+
+      // Save JWT token
+      localStorage.setItem('token', data.token);
+
+      // Optionally save user email or other data
+      localStorage.setItem('email', data.user.email);
+
+      // Redirect to dashboard page
+      window.location.href = './loadingpage1.html';
+
+    } catch (err) {
+      alert(err.message);
+      grecaptcha.reset();
+    }
+  });
+  </script>
+</body>
+</html>
