@@ -6,64 +6,102 @@
     <title>My Profile | JMCoin</title>
     <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
     <link rel="stylesheet" href="./assets/css/styles.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body {
-            background: linear-gradient(135deg, #3b82f6, #22c55e);
+            background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', sans-serif;
+            margin: 0;
         }
-
         .profile-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(30,41,59,0.92);
             border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 36px 28px 32px 28px;
+            max-width: 440px;
             width: 100%;
+            color: #fff;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s;
         }
-
         .logo-img {
             width: 100px;
             height: auto;
             margin-bottom: 15px;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(59,130,246,0.10);
         }
-
         .profile-title {
-            font-weight: 600;
-            font-size: 22px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #38bdf8;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
         }
-
         .info-label {
             font-weight: 500;
-            color: #555;
+            color: #cbd5e1;
         }
-
         .info-value {
             font-weight: bold;
-            color: #111;
+            color: #22c55e;
         }
-
         .ip-list {
             list-style: none;
             padding-left: 0;
+            margin-bottom: 0;
         }
-
         .ip-list li {
-            padding: 5px 0;
-            border-bottom: 1px dashed #ccc;
+            padding: 7px 0;
+            border-bottom: 1px dashed #334155;
+            color: #cbd5e1;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
         }
-
+        .ip-list li:last-child {
+            border-bottom: none;
+        }
         .flag-icon {
             width: 24px;
-            height: 24px;
-            border-radius: 50%;
+            height: 18px;
+            border-radius: 4px;
             object-fit: cover;
-            margin-right: 8px;
+            margin-right: 10px;
             vertical-align: middle;
-            border: 1px solid #ccc;
+            border: 1px solid #334155;
+            background: #222b3a;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #3b82f6 60%, #22c55e 100%);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            padding: 0.7rem 1.5rem;
+            margin-top: 1.5rem;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 24px rgba(34,197,94,0.13);
+            transform: translateY(-2px) scale(1.03);
+            color: #fff;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95);}
+            to { opacity: 1; transform: scale(1);}
+        }
+        @media (max-width: 600px) {
+            .profile-card {
+                padding: 18px 4px 16px 4px;
+            }
+            .logo-img {
+                width: 70px;
+            }
         }
     </style>
 </head>
@@ -71,7 +109,7 @@
 
 <div class="profile-card text-center">
     <img src="./assets/images/logos/jmc.jpg" alt="logo" class="logo-img" />
-    <h4 class="profile-title mb-3">My Profile</h4>
+    <h4 class="profile-title mb-3"><i class="bi bi-person-circle"></i> My Profile</h4>
 
     <div class="text-start">
         <p><span class="info-label">User ID:</span> <span class="info-value" id="userId">Loading...</span></p>
@@ -82,7 +120,7 @@
         </ul>
     </div>
 
-    <a href="./index.html" class="btn btn-primary mt-4">Back to Dashboard</a>
+    <a href="./index.html" class="btn btn-primary mt-4"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
 </div>
 
 <script>
@@ -138,7 +176,3 @@
     }
 
     loadProfile();
-</script>
-
-</body>
-</html>

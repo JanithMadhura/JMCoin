@@ -6,9 +6,10 @@
   <title>JMCoin Earning</title>
   <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
   <link rel="stylesheet" href="./assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
     body {
-      background: linear-gradient(135deg, #3b82f6 0%, #22c55e 100%);
+      background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
       min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
@@ -20,40 +21,106 @@
       left: 0;
       width: 260px;
       height: 100vh;
-      background: rgba(255,255,255,0.85);
-      box-shadow: 2px 0 24px rgba(0,0,0,0.08);
-      backdrop-filter: blur(8px);
+      background: rgba(30,41,59,0.97);
+      box-shadow: 2px 0 24px rgba(0,0,0,0.13);
       z-index: 1000;
       transform: translateX(0);
       transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .sidebar-animated.closed {
       transform: translateX(-100%);
       box-shadow: none;
     }
+    .brand-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 0 12px 0;
+      width: 100%;
+    }
+    .brand-logo img {
+      width: 100px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(59,130,246,0.10);
+    }
+    .sidebar-nav {
+      width: 100%;
+    }
+    .sidebar-nav .sidebar-item {
+      list-style: none;
+    }
+    .sidebar-nav .sidebar-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 1.08rem;
+      padding: 10px 32px;
+      display: block;
+      border-radius: 8px;
+      transition: background 0.18s;
+    }
+    .sidebar-nav .sidebar-link:hover, .sidebar-nav .sidebar-link.active {
+      background: rgba(59,130,246,0.13);
+      color: #38bdf8;
+    }
+    .sidebar-nav .nav-small-cap {
+      margin: 16px 0 8px 16px;
+      color: #888;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+    }
+    .sidebar-nav .sidebar-item .sidebar-link.has-arrow:after {
+      content: '';
+      display: inline-block;
+      margin-left: 8px;
+      border: solid #3b82f6;
+      border-width: 0 2px 2px 0;
+      padding: 3px;
+      transform: rotate(45deg);
+      transition: transform 0.2s;
+    }
+    .sidebar-nav .sidebar-item .sidebar-link.has-arrow.open:after {
+      transform: rotate(-135deg);
+    }
     .main-content {
       margin-left: 260px;
       transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
-      padding: 32px 16px 0 16px;
+      padding: 40px 16px 0 16px;
     }
     .main-content.full {
       margin-left: 0;
     }
     .glass-card {
-      background: rgba(255,255,255,0.92);
+      background: rgba(30,41,59,0.92);
       border-radius: 18px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
       padding: 32px;
       margin-bottom: 32px;
       transition: box-shadow 0.2s;
+      color: #fff;
     }
     .glass-card:hover {
-      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+      box-shadow: 0 12px 40px rgba(34,197,94,0.13);
+    }
+    .glass-card .card-title,
+    .glass-card .card-subtitle {
+      color: #fff;
+    }
+    .glass-card .card-subtitle {
+      color: #cbd5e1;
+    }
+    .text-success {
+      color: #22c55e !important;
     }
     .hamburger {
       position: fixed;
-      top: 18px;
-      left: 260px; /* aligns with the right edge of the sidebar */
+      top: 24px;
+      left: 260px;
       width: 40px;
       height: 40px;
       z-index: 2000;
@@ -86,19 +153,6 @@
     .hamburger.active .bar3 {
       transform: rotate(-45deg) translate(6px, -6px);
     }
-    .sidebar-nav .sidebar-item .sidebar-link.has-arrow:after {
-      content: '';
-      display: inline-block;
-      margin-left: 8px;
-      border: solid #3b82f6;
-      border-width: 0 2px 2px 0;
-      padding: 3px;
-      transform: rotate(45deg);
-      transition: transform 0.2s;
-    }
-    .sidebar-nav .sidebar-item .sidebar-link.has-arrow.open:after {
-      transform: rotate(-135deg);
-    }
     @media (max-width: 900px) {
       .sidebar-animated {
         width: 220px;
@@ -119,6 +173,10 @@
         padding: 12px 4px 0 4px;
       }
     }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
+    }
   </style>
 </head>
 <body>
@@ -131,27 +189,27 @@
 
   <!-- Sidebar -->
   <aside class="sidebar-animated" id="sidebar">
-    <div class="brand-logo" style="display: flex; flex-direction: column; align-items: center; padding: 32px 0 12px 0;">
+    <div class="brand-logo">
       <a href="./index.html" class="text-nowrap logo-img">
-        <img src="assets/images/logos/jmc.jpg" alt="logo" style="width:100px; height:auto; display:block; margin:0 auto;" />
+        <img src="assets/images/logos/jmc.jpg" alt="logo" />
       </a>
     </div>
     <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
       <ul id="sidebarnav" style="padding-left: 0;">
-        <li class="nav-small-cap" style="margin: 16px 0 8px 16px; color: #888;">
+        <li class="nav-small-cap">
           <span class="hide-menu">Navigation</span>
         </li>
-        <li class="sidebar-item"><a class="sidebar-link" href="./index.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a></li>
-        <li class="sidebar-item"><a class="sidebar-link" href="./profile.html"><i class="ti ti-user"></i> User Profile</a></li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./index.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./profile.html"><i class="bi bi-person"></i> User Profile</a></li>
         <li class="sidebar-item">
-          <a class="sidebar-link has-arrow" href="javascript:void(0)" id="earnToggle"><i class="ti ti-coin"></i> Earn</a>
+          <a class="sidebar-link has-arrow" href="javascript:void(0)" id="earnToggle"><i class="bi bi-coin"></i> Earn</a>
           <ul id="earnSubmenu" aria-expanded="false" class="collapse first-level" style="padding-left: 18px; display: none;">
-            <li class="sidebar-item"><a href="./earn-cpx.html" class="sidebar-link"><i class="ti ti-arrow-narrow-right"></i> CPX</a></li>
-            <li class="sidebar-item"><a href="./earn-bitlabs.html" class="sidebar-link"><i class="ti ti-arrow-narrow-right"></i> Bitlabs</a></li>
+            <li class="sidebar-item"><a href="./earn-cpx.html" class="sidebar-link"><i class="bi bi-arrow-right"></i> CPX</a></li>
+            <li class="sidebar-item"><a href="./earn-bitlabs.html" class="sidebar-link"><i class="bi bi-arrow-right"></i> Bitlabs</a></li>
           </ul>
         </li>
-        <li class="sidebar-item"><a class="sidebar-link" href="./withdraw.html"><i class="ti ti-currency-dollar"></i> Withdraw</a></li>
-        <li class="sidebar-item"><a class="sidebar-link" href="./contact.html"><i class="ti ti-phone"></i> Contact Us</a></li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./withdraw.html"><i class="bi bi-currency-dollar"></i> Withdraw</a></li>
+        <li class="sidebar-item"><a class="sidebar-link" href="./contact.html"><i class="bi bi-envelope"></i> Contact Us</a></li>
       </ul>
     </nav>
   </aside>
@@ -184,7 +242,7 @@
         </div>
       </div>
       <div class="py-6 px-6 text-center">
-        <p class="mb-0 fs-4">Design and Developed by <a href="#" class="pe-1 text-primary text-decoration-underline">JMCoin</a></p>
+        <p class="mb-0 fs-4" style="color:#cbd5e1;">Design and Developed by <a href="#" class="pe-1 text-primary text-decoration-underline">JMCoin</a></p>
       </div>
     </div>
   </div>
@@ -235,6 +293,11 @@
         opacity: 1
       },
       tooltip: {
+        theme: "dark",
+        style: {
+          fontSize: '15px',
+          fontFamily: 'Segoe UI, sans-serif'
+        },
         y: {
           formatter: function (val) {
             return "$" + val;
@@ -296,6 +359,3 @@
         }
       }
     }
-    fetchUserData();
-  </script>
-</body>
