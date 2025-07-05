@@ -15,105 +15,59 @@
         margin: 0;
         overflow-x: hidden;
         }
+
+        /* Styles Copied From index.html Sidebar */
         .sidebar-animated {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 260px;
-        height: 100vh;
-        background: rgba(30,41,59,0.97);
-        box-shadow: 2px 0 24px rgba(0,0,0,0.13);
-        z-index: 1000;
-        transform: translateX(0);
-        transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100vh;
+            background: rgba(30,41,59,0.97);
+            box-shadow: 2px 0 24px rgba(0,0,0,0.13);
+            z-index: 1000;
+            transform: translateX(0);
+            transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .sidebar-animated.closed {
-        transform: translateX(-100%);
-        box-shadow: none;
+            transform: translateX(-100%);
         }
         .brand-logo {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 32px 0 12px 0;
-        width: 100%;
+            width: 100%;
+            text-align: center;
+            padding: 32px 0 18px 0;
         }
         .brand-logo img {
-        width: 100px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-        border-radius: 1rem;
-        box-shadow: 0 2px 12px rgba(59,130,246,0.10);
+            width: 80px;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(59,130,246,0.10);
         }
-        .sidebar-nav {
-        width: 100%;
+        .sidebar-links {
+            width: 100%;
+            padding-left: 0;
+            margin-top: 24px;
         }
-        .sidebar-nav .sidebar-item {
-        list-style: none;
+        .sidebar-links li {
+            list-style: none;
+            margin: 0 0 12px 0;
         }
-        .sidebar-nav .sidebar-link {
-        color: #cbd5e1;
-        text-decoration: none;
-        font-size: 1.08rem;
-        padding: 10px 32px;
-        display: block;
-        border-radius: 8px;
-        transition: background 0.18s;
+        .sidebar-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 1.08rem;
+            padding: 10px 32px;
+            display: block;
+            border-radius: 8px;
+            transition: background 0.18s;
         }
-        .sidebar-nav .sidebar-link:hover, .sidebar-nav .sidebar-link.active {
-        background: rgba(59,130,246,0.13);
-        color: #38bdf8;
+        .sidebar-links a:hover, .sidebar-links .active {
+            background: rgba(59,130,246,0.13);
+            color: #38bdf8;
         }
-        .sidebar-nav .nav-small-cap {
-        margin: 16px 0 8px 16px;
-        color: #888;
-        font-size: 0.95rem;
-        letter-spacing: 1px;
-        }
-        .sidebar-nav .sidebar-item .sidebar-link.has-arrow:after {
-        content: '';
-        display: inline-block;
-        margin-left: 8px;
-        border: solid #3b82f6;
-        border-width: 0 2px 2px 0;
-        padding: 3px;
-        transform: rotate(45deg);
-        transition: transform 0.2s;
-        }
-        .sidebar-nav .sidebar-item .sidebar-link.has-arrow.open:after {
-        transform: rotate(-135deg);
-        }
-        .main-content {
-        margin-left: 260px;
-        transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
-        padding: 40px 16px 0 16px;
-        }
-        .main-content.full {
-        margin-left: 0;
-        }
-        .glass-card {
-        background: rgba(30,41,59,0.92);
-        border-radius: 18px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-        padding: 32px;
-        margin-bottom: 32px;
-        transition: box-shadow 0.2s;
-        color: #fff;
-        }
-        .glass-card:hover {
-        box-shadow: 0 12px 40px rgba(34,197,94,0.13);
-        }
-        .glass-card .card-title,
-        .glass-card .card-subtitle {
-        color: #fff;
-        }
-        .glass-card .card-subtitle {
-        color: #cbd5e1;
-        }
+
         .text-success {
         color: #22c55e !important;
         }
@@ -191,6 +145,14 @@
         display: none;
         text-align: center;
         }
+        .main-content {
+            margin-left: 220px; /* Adjusted */
+            padding: 40px 16px 0 16px;
+            transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+        }
+        .main-content.full {
+            margin-left: 0;
+        }
         @media (max-width: 900px) {
         .sidebar-animated {
             width: 220px;
@@ -232,11 +194,7 @@
             <img src="assets/images/logos/jmc.jpg" alt="logo" />
         </a>
         </div>
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-        <ul id="sidebarnav" style="padding-left: 0;">
-            <li class="nav-small-cap">
-            <span class="hide-menu">Navigation</span>
-            </li>
+        <ul class="sidebar-links">
             <li class="sidebar-item"><a class="sidebar-link" href="./loadingpage1.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="#" onclick="openProfile()"><i class="bi bi-person"></i> User Profile</a>
@@ -254,7 +212,6 @@
               <a class="sidebar-link" href="#" onclick="signout()"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
             </li>
         </ul>
-        </nav>
     </aside>
 
     <!-- Main Content -->
