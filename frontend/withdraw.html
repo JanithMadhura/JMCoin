@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Withdraw | JMCoin</title>
+    <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+        background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+        }
+        .sidebar-animated {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100vh;
+        background: rgba(30,41,59,0.97);
+        box-shadow: 2px 0 24px rgba(0,0,0,0.13);
+        z-index: 1000;
+        transform: translateX(0);
+        transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+        .sidebar-animated.closed {
+        transform: translateX(-100%);
+        box-shadow: none;
+        }
+        .brand-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 32px 0 12px 0;
+        width: 100%;
+        }
+        .brand-logo img {
+        width: 100px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(59,130,246,0.10);
+        }
+        .sidebar-nav {
+        width: 100%;
+        }
+        .sidebar-nav .sidebar-item {
+        list-style: none;
+        }
+        .sidebar-nav .sidebar-link {
+        color: #cbd5e1;
+        text-decoration: none;
+        font-size: 1.08rem;
+        padding: 10px 32px;
+        display: block;
+        border-radius: 8px;
+        transition: background 0.18s;
+        }
+        .sidebar-nav .sidebar-link:hover, .sidebar-nav .sidebar-link.active {
+        background: rgba(59,130,246,0.13);
+        color: #38bdf8;
+        }
+        .sidebar-nav .nav-small-cap {
+        margin: 16px 0 8px 16px;
+        color: #888;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        }
+        .sidebar-nav .sidebar-item .sidebar-link.has-arrow:after {
+        content: '';
+        display: inline-block;
+        margin-left: 8px;
+        border: solid #3b82f6;
+        border-width: 0 2px 2px 0;
+        padding: 3px;
+        transform: rotate(45deg);
+        transition: transform 0.2s;
+        }
+        .sidebar-nav .sidebar-item .sidebar-link.has-arrow.open:after {
+        transform: rotate(-135deg);
+        }
+        .main-content {
+        margin-left: 260px;
+        transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+        padding: 40px 16px 0 16px;
+        }
+        .main-content.full {
+        margin-left: 0;
+        }
+        .glass-card {
+        background: rgba(30,41,59,0.92);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        padding: 32px;
+        margin-bottom: 32px;
+        transition: box-shadow 0.2s;
+        color: #fff;
+        }
+        .glass-card:hover {
+        box-shadow: 0 12px 40px rgba(34,197,94,0.13);
+        }
+        .glass-card .card-title,
+        .glass-card .card-subtitle {
+        color: #fff;
+        }
+        .glass-card .card-subtitle {
+        color: #cbd5e1;
+        }
+        .text-success {
+        color: #22c55e !important;
+        }
+        .text-danger {
+        color: #ff6b6b !important;
+        }
+        .hamburger {
+        position: fixed;
+        top: 24px;
+        left: 260px;
+        width: 40px;
+        height: 40px;
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.85);
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        cursor: pointer;
+        transition: background 0.2s, left 0.3s cubic-bezier(.4,2,.6,1);
+        }
+        .hamburger:hover {
+        background: rgba(255,255,255,1);
+        }
+        .hamburger-bar {
+        width: 24px;
+        height: 3px;
+        background: #3b82f6;
+        margin: 3px 0;
+        border-radius: 2px;
+        transition: all 0.3s cubic-bezier(.4,2,.6,1);
+        }
+        .hamburger.active .bar1 {
+        transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active .bar2 {
+        opacity: 0;
+        }
+        .hamburger.active .bar3 {
+        transform: rotate(-45deg) translate(6px, -6px);
+        }
+        .form-control {
+        border-radius: 10px;
+        background: #222b3a;
+        color: #fff;
+        border: 1px solid #334155;
+        margin-bottom: 1rem;
+        }
+        .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px #3b82f6;
+        background: #1e293b;
+        color: #fff;
+        }
+        .btn-withdraw {
+        background: linear-gradient(90deg, #3b82f6 60%, #ff6b6b 100%);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        padding: 0.7rem 1.5rem;
+        margin-top: 1.5rem;
+        transition: box-shadow 0.2s, transform 0.2s;
+        width: 100%;
+        }
+        .btn-withdraw:hover {
+        box-shadow: 0 8px 24px rgba(255,107,107,0.13);
+        transform: translateY(-2px) scale(1.03);
+        color: #fff;
+        }
+        #withdrawMsg {
+        color: #ff6b6b;
+        margin-bottom: 15px;
+        display: none;
+        text-align: center;
+        }
+        @media (max-width: 900px) {
+        .sidebar-animated {
+            width: 220px;
+        }
+        .main-content {
+            margin-left: 0;
+            padding-top: 80px;
+        }
+        .hamburger {
+            left: 220px;
+        }
+        }
+        @media (max-width: 600px) {
+        .glass-card {
+            padding: 16px;
+        }
+        .main-content {
+            padding: 12px 4px 0 4px;
+        }
+        }
+        @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95);}
+        to { opacity: 1; transform: scale(1);}
+        }
+    </style>
+    </head>
+    <body>
+    <!-- Hamburger Button (always visible) -->
+    <div class="hamburger" id="sidebarToggle">
+        <div class="hamburger-bar bar1"></div>
+        <div class="hamburger-bar bar2"></div>
+        <div class="hamburger-bar bar3"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar-animated" id="sidebar">
+        <div class="brand-logo">
+        <a href="./index.html" class="text-nowrap logo-img">
+            <img src="assets/images/logos/jmc.jpg" alt="logo" />
+        </a>
+        </div>
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+        <ul id="sidebarnav" style="padding-left: 0;">
+            <li class="nav-small-cap">
+            <span class="hide-menu">Navigation</span>
+            </li>
+            <li class="sidebar-item"><a class="sidebar-link" href="./index.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="./profile.html"><i class="bi bi-person"></i> User Profile</a></li>
+            <li class="sidebar-item">
+            <a class="sidebar-link has-arrow" href="javascript:void(0)" id="earnToggle"><i class="bi bi-coin"></i> Earn</a>
+            <ul id="earnSubmenu" aria-expanded="false" class="collapse first-level" style="padding-left: 18px; display: none;">
+                <li class="sidebar-item"><a href="./earn-cpx.html" class="sidebar-link"><i class="bi bi-arrow-right"></i> CPX</a></li>
+                <li class="sidebar-item"><a href="./earn-bitlabs.html" class="sidebar-link"><i class="bi bi-arrow-right"></i> Bitlabs</a></li>
+            </ul>
+            </li>
+            <li class="sidebar-item"><a class="sidebar-link active" href="./withdraw.html"><i class="bi bi-currency-dollar"></i> Withdraw</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="./contact.html"><i class="bi bi-envelope"></i> Contact Us</a></li>
+        </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="container py-4">
+        <div class="row">
+            <!-- Withdraw Form Card -->
+            <div class="col-lg-12">
+            <div class="glass-card">
+                <h4 class="card-title mb-3">Withdraw Funds</h4>
+                <p class="card-subtitle text-muted">Request a withdrawal from your available balance.</p>
+                <div id="withdrawMsg"></div>
+                <form id="withdrawForm">
+                <div class="mb-3">
+                    <label for="withdrawAmount" class="form-label" style="color:#cbd5e1;">Amount (JMC)</label>
+                    <input type="number" class="form-control" id="withdrawAmount" placeholder="Enter amount to withdraw" required>
+                </div>
+                <div class="mb-3">
+                    <label for="paymentMethod" class="form-label" style="color:#cbd5e1;">Payment Method</label>
+                    <select class="form-control" id="paymentMethod" required>
+                    <option value="bitcoin">FaucetPay LTC</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="paymentDetails" class="form-label" style="color:#cbd5e1;">Payment Details</label>
+                    <input type="text" class="form-control" id="paymentDetails" placeholder="Your FaucetPay email address" required>
+                </div>
+                <button type="submit" class="btn btn-withdraw">Request Withdrawal</button>
+                </form>
+            </div>
+            </div>
+        </div>
+        <div class="py-6 px-6 text-center">
+            <p class="mb-0 fs-4" style="color:#cbd5e1;">Design and Developed by <a href="#" class="pe-1 text-primary text-decoration-underline">JMCoin</a></p>
+        </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Animation Script -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('closed');
+        sidebarToggle.classList.toggle('active');
+        mainContent.classList.toggle('full');
+        });
+
+        // Earn submenu toggle
+        const earnToggle = document.getElementById('earnToggle');
+        const earnSubmenu = document.getElementById('earnSubmenu');
+        earnToggle.addEventListener('click', function() {
+        const isOpen = earnSubmenu.style.display === "block";
+        earnSubmenu.style.display = isOpen ? "none" : "block";
+        earnToggle.classList.toggle("open", !isOpen);
+        });
+    </script>
+
+    <!-- User Data and Withdrawal Script -->
+    <script>
+        const backendApiUrl = 'https://jm-coin.vercel.app/api'; // Replace with your actual backend URL
+
+        async function fetchUserData() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Please login first');
+            window.location.href = '/authentication-login.html';
+            return;
+        }
+
+        try {
+            const res = await fetch(`${backendApiUrl}/api/dashboard`, {
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.msg || 'Failed to fetch data');
+            return data.balance; // Return the balance
+        } catch (err) {
+            alert(err.message);
+            if (err.message === 'Token is not valid' || err.message === 'No token, authorization denied') {
+            window.location.href = '/authentication-login.html';
+            }
+            return null; // Indicate failure
+        }
+        }
+
+        document.getElementById('withdrawForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const withdrawAmount = Number(document.getElementById('withdrawAmount').value);
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const paymentDetails = document.getElementById('paymentDetails').value;
+        const withdrawMsg = document.getElementById('withdrawMsg');
+
+        const balance = await fetchUserData();
+        if (balance === null) return; // If fetching balance failed
+
+        if (balance < 5000) {
+            withdrawMsg.textContent = 'Minimum balance of 5000 JMC required to make a withdrawal.';
+            withdrawMsg.style.display = 'block';
+            return;
+        }
+
+        if (withdrawAmount > balance) {
+            withdrawMsg.textContent = 'Withdrawal amount exceeds your balance.';
+            withdrawMsg.style.display = 'block';
+            return;
+        }
+        if (withdrawAmount <= 0) {
+            withdrawMsg.textContent = 'Withdrawal amount must be positive.';
+            withdrawMsg.style.display = 'block';
+            return;
+        }
+
+        // Simulate sending withdrawal request to the backend (replace with your actual API call)
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${backendApiUrl}/api/request-withdrawal`, { // Replace with your actual endpoint
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                amount: withdrawAmount,
+                paymentMethod: paymentMethod,
+                paymentDetails: paymentDetails
+            })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.msg || 'Withdrawal request failed');
+
+            withdrawMsg.textContent = 'Withdrawal request submitted successfully.';
+            withdrawMsg.style.color = '#22c55e'; // Success color
+            withdrawMsg.style.display = 'block';
+        } catch (err) {
+            withdrawMsg.textContent = err.message;
+            withdrawMsg.style.color = '#ff6b6b'; // Error color
+            withdrawMsg.style.display = 'block';
+        }
+        });
+    </script>
+</body>
+</html>

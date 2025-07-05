@@ -126,7 +126,12 @@
                     break;
                 case 'withdrawals':
                     dashboardTitle.textContent = 'Withdrawal Requests';
-                    contentArea.textContent = 'Withdrawal requests content will go here.'; // Replace with actual content
+                    try {
+                        const withdrawals = await fetchWithdrawals();
+                        contentArea.appendChild(createWithdrawalTable(withdrawals));
+                    } catch (error) {
+                        contentArea.textContent = 'Failed to load withdrawal requests.';
+                    }
                     break;
                 case 'dashboard':
                     dashboardTitle.textContent = 'Dashboard';
@@ -151,6 +156,19 @@
             return response.json();
         }
 
+        // Function to fetch withdrawal requests from the backend
+        async function fetchWithdrawals() {
+            const response = await fetch(`${backendApiUrl}/api/admin/withdrawals`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch withdrawal requests');
+            }
+            return response.json();
+        }
+
         // Function to create a user table
         function createUserTable(users) {
             const table = document.createElement('table');
@@ -170,6 +188,40 @@
                             <td>${user.email}</td>
                             <td>${user.balance}</td>
                             <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            return table;
+        }
+
+        // Function to create a withdrawal table
+        function createWithdrawalTable(withdrawals) {
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        <th>Payment Details</th>
+                        <th>Status</th>
+                        <th>Requested At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${withdrawals.map(withdrawal => `
+                        <tr>
+                            <td>
+                                <a href="profile.html?email=${withdrawal.user.email}" target="_blank" style="color: #38bdf8; text-decoration: none;">
+                                    ${withdrawal.user.name} (${withdrawal.user.email})
+                                </a>
+                            </td>
+                            <td>${withdrawal.amount}</td>
+                            <td>${withdrawal.paymentMethod}</td>
+                            <td>${withdrawal.paymentDetails}</td>
+                            <td>${withdrawal.status}</td>
+                            <td>${new Date(withdrawal.requestedAt).toLocaleDateString()}</td>
                         </tr>
                     `).join('')}
                 </tbody>

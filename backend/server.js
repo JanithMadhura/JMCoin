@@ -361,4 +361,64 @@ app.get('/api/dashboard', authenticateToken, async (req, res) => {
   res.json({ balance: user.balance });
 });
 
+const WithdrawalRequest = require('./models/WithdrawalRequest');
+
+// Withdrawal Request Endpoint
+app.post('/api/request-withdrawal', authenticateToken, async (req, res) => {
+  try {
+    const { amount, paymentMethod, paymentDetails } = req.body;
+    const userId = req.user.id;
+
+    // Validate input (you should add more validation)
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ msg: 'Invalid withdrawal amount' });
+    }
+
+    // Get User and Validate balance
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    if (user.balance < amount) {
+      return res.status(400).json({ msg: 'Insufficient balance' });
+    }
+    if (user.balance < 5000) {
+      return res.status(400).json({ msg: 'insufficient balance. Minimum balance of 5000 JMC required' });
+    }
+    // Perform the Withdrawal
+    user.balance -= amount; // Subtract the amount
+    await user.save();
+
+    // Create a new WithdrawalRequest record
+    const withdrawalRequest = new WithdrawalRequest({
+      user: userId,
+      amount: amount,
+      paymentMethod: paymentMethod,
+      paymentDetails: paymentDetails
+    });
+
+    await withdrawalRequest.save();
+
+    // **Here you would typically trigger the actual payment process (e.g., PayPal API call)**
+
+    res.json({ msg: 'Withdrawal request submitted successfully' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Admin endpoint to get all withdrawal requests
+app.get('/api/admin/withdrawals', authenticateToken, adminOnly, async (req, res) => {
+  try {
+    const withdrawals = await WithdrawalRequest.find().populate('user', 'name email'); // Populate user details
+    res.json(withdrawals);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = app;

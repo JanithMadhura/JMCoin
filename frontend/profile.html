@@ -124,7 +124,17 @@
 </div>
 
 <script>
-    const email = localStorage.getItem("email");
+    // Function to extract query parameter from URL
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    const email = getQueryParam("email");
+    if (!email) {
+        alert("No email provided!");
+        window.location.href = "./index.html"; // Redirect to dashboard or error page
+    }
 
     async function loadProfile() {
         try {
