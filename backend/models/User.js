@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema({
         }
     ],
     resetCode: String,
-    resetCodeExpires: Date
+    resetCodeExpires: Date,
+    isAdmin: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

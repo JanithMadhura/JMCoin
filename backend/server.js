@@ -34,6 +34,12 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+User.updateOne({ email: "janithmadura22@email.com" }, { $set: { isAdmin: true } })
+  .then(() => console.log('Admin set!'))
+  .catch(console.error);
+
+
+
 // Register route
 const PendingUser = require('./models/PendingUser');
 const sendVerificationEmail = require('./utils/sendEmail');
@@ -192,12 +198,19 @@ app.post('/api/login', async (req, res) => {
         email: user.email,
         balance: user.balance,
         loginIps: user.loginIps,
+        isAdmin: user.isAdmin
       },
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
+});
+
+const adminOnly = require('./middleware/adminOnly');
+
+app.get('/api/admin/dashboard', authenticateToken, adminOnly, (req, res) => {
+  res.json({ msg: 'Welcome to the admin dashboard!' });
 });
 
 // Protected route to get logged-in user's info
