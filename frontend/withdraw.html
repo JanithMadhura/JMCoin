@@ -237,8 +237,10 @@
             <li class="nav-small-cap">
             <span class="hide-menu">Navigation</span>
             </li>
-            <li class="sidebar-item"><a class="sidebar-link" href="./index.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
-            <li class="sidebar-item"><a class="sidebar-link" href="./profile.html"><i class="bi bi-person"></i> User Profile</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="./loadingpage1.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="#" onclick="openProfile()"><i class="bi bi-person"></i> User Profile</a>
+            </li>
             <li class="sidebar-item">
             <a class="sidebar-link has-arrow" href="javascript:void(0)" id="earnToggle"><i class="bi bi-coin"></i> Earn</a>
             <ul id="earnSubmenu" aria-expanded="false" class="collapse first-level" style="padding-left: 18px; display: none;">
@@ -248,6 +250,9 @@
             </li>
             <li class="sidebar-item"><a class="sidebar-link active" href="./withdraw.html"><i class="bi bi-currency-dollar"></i> Withdraw</a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="./contact.html"><i class="bi bi-envelope"></i> Contact Us</a></li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="#" onclick="signout()"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+            </li>
         </ul>
         </nav>
     </aside>
@@ -393,6 +398,22 @@
             withdrawMsg.style.display = 'block';
         }
         });
+
+        function signout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+            localStorage.removeItem('isAdmin');
+            window.location.href = '/authentication-login.html';
+        }
+
+        function openProfile() {
+            const email = localStorage.getItem('email');
+            if (email) {
+                window.location.href = `./profile.html?email=${email}`;
+            } else {
+                alert('No email found in local storage. Please log in.');
+            }
+        }
     </script>
 </body>
 </html>
