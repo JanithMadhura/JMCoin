@@ -211,6 +211,17 @@ app.post('/api/login', async (req, res) => {
 
 const adminOnly = require('./middleware/adminOnly');
 
+// New route to get all users (admin only)
+app.get('/api/admin/users', authenticateToken, adminOnly, async (req, res) => {
+  try {
+    const users = await User.find().select('-passwordHash'); // Exclude password hashes
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 app.get('/api/admin/dashboard', authenticateToken, adminOnly, (req, res) => {
   res.json({ msg: 'Welcome to the admin dashboard!' });
 });

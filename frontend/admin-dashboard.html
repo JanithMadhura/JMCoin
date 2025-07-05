@@ -8,59 +8,185 @@
     <link rel="stylesheet" href="./assets/css/styles.min.css" />
     <style>
         body {
-        background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Segoe UI', sans-serif;
-        margin: 0;
+            background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            color: #fff;
         }
+
+        /* Slider Styles (Now Navigation) */
+        .admin-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .navigation {
+            width: 250px;
+            background: rgba(30, 41, 59, 0.92);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .navigation h3 {
+            margin-bottom: 15px;
+            color: #38bdf8;
+        }
+
+        .nav-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .dashboard-content {
+            flex-grow: 1;
+            padding: 20px;
+            text-align: left; /* Changed to left alignment */
+        }
+
         .admin-card {
-        background: rgba(30,41,59,0.92);
-        border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-        padding: 36px 28px 32px 28px;
-        max-width: 440px;
-        width: 100%;
-        color: #fff;
-        backdrop-filter: blur(8px);
-        animation: fadeIn 0.8s;
-        margin: 32px auto;
-        text-align: center;
+            background: rgba(30, 41, 59, 0.92);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            padding: 36px 28px 32px 28px;
+            max-width: 440px;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s;
+            margin: 32px auto;
         }
+
         @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.95);}
-        to { opacity: 1; transform: scale(1);}
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
-    </head>
-    <body>
+</head>
+
+<body>
     <script>
         // Protect admin page
         if (localStorage.getItem('isAdmin') !== 'true') {
             window.location.href = '/authentication-login.html';
         }
     </script>
-    <div class="admin-card">
-        <h2>Admin Dashboard</h2>
-        <p>Welcome, admin! Only you can see this page.</p>
-        <div id="adminData"></div>
+    <div class="admin-container">
+        <div class="navigation">
+            <h3>Menu</h3>
+            <div class="nav-item" data-topic="users">Users</div>
+            <div class="nav-item" data-topic="withdrawals">Withdraw Requests</div>
+            <div class="nav-item" data-topic="dashboard">Dashboard</div>
+        </div>
+        <div class="dashboard-content">
+            <h2 id="dashboardTitle">Dashboard</h2>
+            <div id="dashboardData">
+                <p>Welcome, admin! Only you can see this page.</p>
+            </div>
+            <div id="contentArea">
+                <!-- Content will be loaded here based on the selected topic -->
+            </div>
+        </div>
     </div>
     <script>
         // Fetch admin data from backend
-        fetch('https://jm-coin.vercel.app/api/admin/dashboard', {
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        const backendApiUrl = 'https://jm-coin.vercel.app/api';
+
+        // Function to load content based on topic
+        async function loadContent(topic) {
+            const contentArea = document.getElementById('contentArea');
+            const dashboardTitle = document.getElementById('dashboardTitle');
+
+            contentArea.innerHTML = ''; // Clear existing content
+
+            switch (topic) {
+                case 'users':
+                    dashboardTitle.textContent = 'User Management';
+                    try {
+                        const users = await fetchUsers();
+                        contentArea.appendChild(createUserTable(users));
+                    } catch (error) {
+                        contentArea.textContent = 'Failed to load users.';
+                    }
+                    break;
+                case 'withdrawals':
+                    dashboardTitle.textContent = 'Withdrawal Requests';
+                    contentArea.textContent = 'Withdrawal requests content will go here.'; // Replace with actual content
+                    break;
+                case 'dashboard':
+                    dashboardTitle.textContent = 'Dashboard';
+                    contentArea.innerHTML = '<p>Welcome to the dashboard!</p>';
+                    break;
+                default:
+                    dashboardTitle.textContent = 'Dashboard';
+                    contentArea.innerHTML = '<p>Select a topic from the menu.</p>';
+            }
         }
-        })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('adminData').textContent = data.msg;
-        })
-        .catch(() => {
-            document.getElementById('adminData').textContent = "Failed to load admin data.";
+
+        // Function to fetch users from the backend
+        async function fetchUsers() {
+            const response = await fetch(`${backendApiUrl}/api/admin/users`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch users');
+            }
+            return response.json();
+        }
+
+        // Function to create a user table
+        function createUserTable(users) {
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Balance</th>
+                        <th>Joined At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${users.map(user => `
+                        <tr>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.balance}</td>
+                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            return table;
+        }
+
+        // Add click listeners to navigation items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const topic = this.dataset.topic;
+                loadContent(topic);
+            });
         });
+
+        // Load default content (dashboard)
+        loadContent('dashboard');
     </script>
 </body>
 </html>
