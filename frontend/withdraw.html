@@ -209,7 +209,7 @@
             <li class="sidebar-item"><a class="sidebar-link active" href="./withdraw.html"><i class="bi bi-currency-dollar"></i> Withdraw</a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="./contact.html"><i class="bi bi-envelope"></i> Contact Us</a></li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#" onclick="signout()"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
+                <a class="sidebar-link" href="#" onclick="signout()"><i class="bi bi-box-arrow-left"></i> Sign Out</a>
             </li>
         </ul>
     </aside>
@@ -217,7 +217,17 @@
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <div class="container py-4">
-        <div class="row">
+            <!-- Main Balance Card -->
+                <div class="col-lg-12 mb-4">
+                    <div class="glass-card d-flex align-items-center justify-content-between flex-wrap">
+                        <div>
+                            <h4 class="card-title mb-1">Main Balance</h4>
+                            <p class="card-subtitle text-muted">Total Earnings Available</p>
+                        </div>
+                        <h2 id="balance" class="text-success mb-0 fw-bold">Loading...</h2>
+                    </div>
+                </div>
+            <div class="row">
             <!-- Withdraw Form Card -->
             <div class="col-lg-12">
             <div class="glass-card">
