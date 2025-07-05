@@ -282,7 +282,7 @@
     </script>
 
     <!-- User Data and Withdrawal Script -->
-    <script>
+     <script>
         const backendApiUrl = 'https://jm-coin.vercel.app';
 
         async function fetchUserData() {
@@ -290,7 +290,7 @@
         if (!token) {
             alert('Please login first');
             window.location.href = '/authentication-login.html';
-            return;
+            return null;
         }
 
         try {
@@ -300,7 +300,8 @@
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.msg || 'Failed to fetch data');
-            return data.balance; // Return the balance
+            document.querySelector('#balance').textContent = data.balance + ' JMC';
+            return data.balance;
         } catch (err) {
             alert(err.message);
             if (err.message === 'Token is not valid' || err.message === 'No token, authorization denied') {
@@ -309,6 +310,8 @@
             return null; // Indicate failure
         }
         }
+        // Call the function to fetch and display user data when the page loads
+        fetchUserData();
 
         document.getElementById('withdrawForm').addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -318,7 +321,8 @@
         const withdrawMsg = document.getElementById('withdrawMsg');
 
         const balance = await fetchUserData();
-        if (balance === null) return; // If fetching balance failed
+
+        if (balance === null) return;
 
         if (balance < 5000) {
             withdrawMsg.textContent = 'Minimum balance of 5000 JMC required to make a withdrawal.';
