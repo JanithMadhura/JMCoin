@@ -200,7 +200,9 @@
           <span class="hide-menu">Navigation</span>
         </li>
         <li class="sidebar-item"><a class="sidebar-link" href="./loadingpage1.html"><i class="bi bi-house-door"></i> Dashboard</a></li>
-        <li class="sidebar-item"><a class="sidebar-link" href="./profile.html"><i class="bi bi-person"></i> User Profile</a></li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#" onclick="openProfile()"><i class="bi bi-person"></i> User Profile</a>
+        </li>
         <li class="sidebar-item">
           <a class="sidebar-link has-arrow" href="javascript:void(0)" id="earnToggle"><i class="bi bi-coin"></i> Earn</a>
           <ul id="earnSubmenu" aria-expanded="false" class="collapse first-level" style="padding-left: 18px; display: none;">
@@ -268,7 +270,7 @@
           name: 'Bitlabs',
           data: [100, 60, 130, 90, 50, 120, 100]
         }
-      ],
+      ,
       xaxis: {
         categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         title: { text: 'Day of Week' }
@@ -371,6 +373,15 @@
         localStorage.removeItem('isAdmin');
         window.location.href = '/authentication-login.html';
       }
+
+      function openProfile() {
+        const email = localStorage.getItem('email');
+        if (email) {
+            window.location.href = `./profile.html?email=${email}`;
+        } else {
+            alert('No email found in local storage. Please log in.');
+        }
+    }
   </script>
 </body>
 </html>
