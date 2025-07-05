@@ -34,9 +34,11 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-User.updateOne({ email: "janithmadura22@email.com" }, { $set: { isAdmin: true } })
-  .then(() => console.log('Admin set!'))
-  .catch(console.error);
+//const ObjectId = mongoose.Types.ObjectId;
+
+//User.updateOne({ _id: new ObjectId("6868f455ee8821f36e0b4171") }, { $set: { isAdmin: true } })
+  //.then(() => console.log('Admin set!'))
+  //.catch(console.error);
 
 
 
