@@ -49,17 +49,17 @@
     </div>
     <script>
         // Fetch admin data from backend
-        fetch('/api/admin/dashboard', {
+        fetch('https://jm-coin.vercel.app/api/admin/dashboard', {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
         })
         .then(res => res.json())
         .then(data => {
-        document.getElementById('adminData').textContent = data.msg;
+            document.getElementById('adminData').textContent = data.msg;
         })
         .catch(() => {
-        document.getElementById('adminData').textContent = "Failed to load admin data.";
+            document.getElementById('adminData').textContent = "Failed to load admin data.";
         });
     </script>
 </body>
