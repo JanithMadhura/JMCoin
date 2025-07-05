@@ -254,8 +254,20 @@
         // Optionally save user email or other data
         localStorage.setItem('email', data.user.email);
 
+        // Check if user is admin
+        localStorage.setItem('isAdmin', data.user.isAdmin);
+
         // Redirect to dashboard page
-        window.location.href = './loadingpage1.html';
+        if (data.user.isAdmin) {
+          window.location.href = './admin-dashboard.html';
+        } else {
+          window.location.href = './loadingpage1.html';
+        }
+
+      } catch (err) {
+        showNotify('Error during login');
+        console.error(err);
+        grecaptcha.reset();
 
       } catch (err) {
         showNotify(err.message);

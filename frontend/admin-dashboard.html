@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Dashboard | JMCoin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/png" href="./assets/images/logos/jmc.jpg" />
+    <link rel="stylesheet" href="./assets/css/styles.min.css" />
+    <style>
+        body {
+        background: linear-gradient(135deg, #181c2f 0%, #1e293b 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        }
+        .admin-card {
+        background: rgba(30,41,59,0.92);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        padding: 36px 28px 32px 28px;
+        max-width: 440px;
+        width: 100%;
+        color: #fff;
+        backdrop-filter: blur(8px);
+        animation: fadeIn 0.8s;
+        margin: 32px auto;
+        text-align: center;
+        }
+        @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95);}
+        to { opacity: 1; transform: scale(1);}
+        }
+    </style>
+    </head>
+    <body>
+    <script>
+        // Protect admin page
+        if (localStorage.getItem('isAdmin') !== 'true') {
+            window.location.href = '/authentication-login.html';
+        }
+    </script>
+    <div class="admin-card">
+        <h2>Admin Dashboard</h2>
+        <p>Welcome, admin! Only you can see this page.</p>
+        <div id="adminData"></div>
+    </div>
+    <script>
+        // Example: Fetch admin data from backend
+        fetch('/api/admin/dashboard', {
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+        })
+        .then(res => res.json())
+        .then(data => {
+        document.getElementById('adminData').textContent = data.msg;
+        })
+        .catch(() => {
+        document.getElementById('adminData').textContent = "Failed to load admin data.";
+        });
+    </script>
+</body>
+</html>
